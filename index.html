@@ -190,16 +190,7 @@
             filter: brightness(0.9) contrast(0.9);
             border: 2px solid #1e293b;
         }
-        /* NEW: Reveal transition styles */
-        .section-transition {
-            opacity: 0;
-            transform: translateY(36px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .section-transition.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* REMOVED: Reveal transition styles */
     </style>
 </head>
 <body class="antialiased">
@@ -253,7 +244,7 @@
 
     <main class="container mx-auto">
         <!-- The World of Poseidon Section -->
-        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
+        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
@@ -292,7 +283,7 @@
         </section>
 
         <!-- The Biosphere Section -->
-        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
+        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
             <div class="grid gap-12">
                 <!-- Siphonophore Drifters -->
@@ -508,7 +499,7 @@
         </section>
 
         <!-- The Simulation Section -->
-        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
+        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
             <p class="mb-8 max-w-3xl mx-auto">
                 Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
@@ -525,7 +516,7 @@
         </section>
 
         <!-- About Us Section -->
-        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
+        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-md leading-relaxed mb-4">
@@ -542,7 +533,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-3xl section-transition">
+    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-3xl">
         <p class="text-sm">
             &copy; 2025 Team Poseidon. All rights reserved. Made for NASA Space Apps Hackathon.
         </p>
@@ -575,30 +566,6 @@
         generateStars('stars', 200, 'small', 100);
         generateStars('stars2', 50, 'medium', 60);
         generateStars('stars3', 20, 'large', 30);
-
-        /* ====== ADDED: minimal reveal-on-scroll with no markup changes ====== */
-        (function() {
-            const revealTargets = [
-                document.querySelector('header#home'),
-                ...document.querySelectorAll('section.content-section'),
-                document.querySelector('footer')
-            ].filter(Boolean);
-
-            // add initial transition class
-            revealTargets.forEach(el => el.classList.add('section-transition'));
-
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    } else {
-                        entry.target.classList.remove('visible'); // replayable when scrolling back
-                    }
-                });
-            }, { threshold: 0.15 });
-
-            revealTargets.forEach(el => io.observe(el));
-        })();
     </script>
 </body>
 </html>

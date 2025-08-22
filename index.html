@@ -190,6 +190,16 @@
             filter: brightness(0.9) contrast(0.9);
             border: 2px solid #1e293b;
         }
+        /* NEW: Reveal transition styles */
+        .section-transition {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .section-transition.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -200,7 +210,7 @@
     <div id="stars3" class="stars"></div>
 
     <!-- Navigation Bar -->
-    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-xl">
+    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-3xl">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold text-white nav-link">Poseidon</a>
             <div class="hidden md:flex space-x-8">
@@ -219,7 +229,7 @@
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-xl">
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-3xl">
             <a href="#world" class="block py-2 px-6 nav-link">The World</a>
             <a href="#biosphere" class="block py-2 px-6 nav-link">The Biosphere</a>
             <a href="#simulation" class="block py-2 px-6 nav-link">Simulation</a>
@@ -230,7 +240,7 @@
     <!-- Home Section (Hero) -->
     <header id="home" class="relative bg-hero h-screen flex items-center justify-center text-center text-white">
         <div class="bg-hero-container"></div>
-        <div class="bg-black bg-opacity-50 p-10 rounded-xl shadow-lg relative">
+        <div class="bg-black bg-opacity-50 p-10 rounded-3xl shadow-lg relative">
             <h1 class="text-5xl md:text-7xl font-bold mb-4">Poseidon: A World Beyond Sunlight</h1>
             <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
                 Explore a hypothetical ocean world where life thrives not on photosynthesis, but on the boundless chemical energy of its geologically active core.
@@ -243,12 +253,12 @@
 
     <main class="container mx-auto">
         <!-- The World of Poseidon Section -->
-        <section id="world" class="content-section bg-black/75 rounded-xl shadow-xl my-10">
+        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                     <!-- Replaced image with video -->
-                    <video class="rounded-xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
+                    <video class="rounded-3xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
                         <source src="Hydrothermal vent.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -273,7 +283,7 @@
                     </p>
                 </div>
                 <div>
-                    <video class="rounded-xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
+                    <video class="rounded-3xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
                         <source src="Geological activity.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -282,7 +292,7 @@
         </section>
 
         <!-- The Biosphere Section -->
-        <section id="biosphere" class="content-section bg-black/75 rounded-xl shadow-xl my-10">
+        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
             <div class="grid gap-12">
                 <!-- Siphonophore Drifters -->
@@ -300,7 +310,7 @@
                         </p>
                     </div>
                     <div class="md:w-1/2">
-                        <img src="Poseidon.jpg" alt="Conceptual image of a Siphonophore Drifter" class="rounded-xl shadow-lg w-full media-filter">
+                        <img src="Poseidon.jpg" alt="Conceptual image of a Siphonophore Drifter" class="rounded-3xl shadow-lg w-full media-filter">
                     </div>
                 </div>
 
@@ -314,7 +324,7 @@
                     </div>
                     <div class="md:w-1/2">
                         <!-- Replaced image with video and removed controls -->
-                        <video autoplay loop muted playsinline class="rounded-xl shadow-lg w-full media-filter">
+                        <video autoplay loop muted playsinline class="rounded-3xl shadow-lg w-full media-filter">
                             <source src="eol.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -329,7 +339,7 @@
                     </p>
                     <div class="flowchart-container">
                         <!-- Hydrothermal Vents -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Hydrothermal Vents</div>
                         </div>
 
@@ -339,14 +349,14 @@
                         <!-- Prebiotic Chemistry & Chemical Gradients -->
                         <div class="branch-container">
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Prebiotic Chemistry</div>
                                     <div class="flow-node-subtitle">(amino acids, lipids, sugars)</div>
                                 </div>
                                 <div class="branch-line-v"></div>
                             </div>
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Chemical Gradients</div>
                                     <div class="flow-node-subtitle">(H₂, CH₄, H₂S, CO₂)</div>
                                 </div>
@@ -358,7 +368,7 @@
 
 
                         <!-- Protocells -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Protocells</div>
                         </div>
 
@@ -366,7 +376,7 @@
                         <div class="connector-line"></div>
 
                         <!-- Microbial Life -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Microbial Life</div>
                         </div>
                         
@@ -376,17 +386,17 @@
                         <!-- Microbial branches -->
                         <div class="branch-container">
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Methanogens</div>
                                 </div>
                             </div>
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Sulfur Oxidizers</div>
                                 </div>
                             </div>
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Hydrogen Users</div>
                                 </div>
                             </div>
@@ -396,7 +406,7 @@
                         <div class="connector-line"></div>
 
                         <!-- Microbial Mats -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Microbial Mats</div>
                         </div>
                         
@@ -406,12 +416,12 @@
                         <!-- Simple Multicellular Life & Filter Feeders -->
                         <div class="branch-container">
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Simple Multicellular Life</div>
                                 </div>
                             </div>
                             <div class="branch-node">
-                                <div class="flow-node">
+                                <div class="flow-node rounded-3xl">
                                     <div class="flow-node-title">Filter Feeders & Grazers</div>
                                 </div>
                             </div>
@@ -421,7 +431,7 @@
                         <div class="connector-line"></div>
 
                         <!-- Predators / Scavengers -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Predators / Scavengers</div>
                         </div>
 
@@ -429,7 +439,7 @@
                         <div class="connector-line"></div>
 
                         <!-- Fully Developed Ecosystem -->
-                        <div class="flow-node">
+                        <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Fully Developed Ecosystem</div>
                         </div>
                     </div>
@@ -443,52 +453,52 @@
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <!-- What If #1: Hydrothermal vents stop or decrease -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Hydrothermal vents stop or decrease</h4>
                             <p class="text-sm leading-relaxed">Energy supply drops, causing microbial mats to shrink. Higher life struggles and the ecosystem collapses in vent regions.</p>
                         </div>
                         <!-- What If #2: Ocean depth decreases significantly -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean depth decreases significantly</h4>
                             <p class="text-sm leading-relaxed">Reduced vent pressure leads to less chemical solubility and fewer habitats. Temperature may fluctuate more, causing microbial stress.</p>
                         </div>
                         <!-- What If #3: Atmosphere becomes thinner (<1 bar) -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Atmosphere becomes thinner (<1 bar)</h4>
                             <p class="text-sm leading-relaxed">Less radiation protection and dissolved gases decrease. This makes surface microbes vulnerable and drops the chemical energy availability.</p>
                         </div>
                         <!-- What If #4: CO₂ levels drop drastically -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">CO₂ levels drop drastically</h4>
                             <p class="text-sm leading-relaxed">Microbes can't fix carbon efficiently, leading to slower growth and less biomass for higher organisms.</p>
                         </div>
                         <!-- What If #5: Ocean temperature rises too much (>320 K) -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean temperature rises too much (>320 K)</h4>
                             <p class="text-sm leading-relaxed">Many microbes cannot survive. Chemical reactions may shift, leading to ecosystem collapse or requiring significant species adaptation.</p>
                         </div>
                         <!-- What If #6: Excess volcanic activity -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Excess volcanic activity</h4>
                             <p class="text-sm leading-relaxed">Overproduction of toxic gases like H₂S and SO₂ causes a chemical imbalance, putting stress on microbial communities.</p>
                         </div>
                         <!-- What If #7: Ocean currents weaken -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean currents weaken</h4>
                             <p class="text-sm leading-relaxed">Slower dispersal of microbes leads to local extinctions and reduced genetic exchange and biodiversity.</p>
                         </div>
                         <!-- What If #8: Methane (CH₄) availability decreases -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Methane (CH₄) availability decreases</h4>
                             <p class="text-sm leading-relaxed">Reduced chemical fuel for methanogens results in slower energy production and lower ecosystem productivity.</p>
                         </div>
                         <!-- What If #9: Life spreads beyond vents -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Life spreads beyond vents</h4>
                             <p class="text-sm leading-relaxed">Creates secondary habitats and a more diverse ecosystem, leading to higher stability and resilience.</p>
                         </div>
                         <!-- What If #10: New chemical sources appear -->
-                        <div class="bg-black/50 p-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">New chemical sources appear</h4>
                             <p class="text-sm leading-relaxed">Introduces new niches, promoting species diversification and more complex ecosystem dynamics.</p>
                         </div>
@@ -498,14 +508,14 @@
         </section>
 
         <!-- The Simulation Section -->
-        <section id="simulation" class="content-section bg-black/75 rounded-xl shadow-xl my-10 text-center">
+        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
             <p class="mb-8 max-w-3xl mx-auto">
                 Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
             </p>
             <!-- Placeholder for your friend's simulation. -->
             <!-- You will replace this with an iframe pointing to their simulation's URL. -->
-            <div class="relative w-full aspect-video rounded-xl shadow-lg overflow-hidden">
+            <div class="relative w-full aspect-video rounded-3xl shadow-lg overflow-hidden">
                 <div class="absolute inset-0 bg-gray-800 flex items-center justify-center p-4">
                     <p class="text-white text-lg font-mono">
                         &lt;iframe src="YOUR_SIMULATION_URL_HERE" width="100%" height="100%"&gt;&lt;/iframe&gt;
@@ -515,7 +525,7 @@
         </section>
 
         <!-- About Us Section -->
-        <section id="about" class="content-section bg-black/75 rounded-xl shadow-xl my-10">
+        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 section-transition">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-md leading-relaxed mb-4">
@@ -532,7 +542,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-t-xl">
+    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-3xl section-transition">
         <p class="text-sm">
             &copy; 2025 Team Poseidon. All rights reserved. Made for NASA Space Apps Hackathon.
         </p>
@@ -565,6 +575,30 @@
         generateStars('stars', 200, 'small', 100);
         generateStars('stars2', 50, 'medium', 60);
         generateStars('stars3', 20, 'large', 30);
+
+        /* ====== ADDED: minimal reveal-on-scroll with no markup changes ====== */
+        (function() {
+            const revealTargets = [
+                document.querySelector('header#home'),
+                ...document.querySelectorAll('section.content-section'),
+                document.querySelector('footer')
+            ].filter(Boolean);
+
+            // add initial transition class
+            revealTargets.forEach(el => el.classList.add('section-transition'));
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible'); // replayable when scrolling back
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            revealTargets.forEach(el => io.observe(el));
+        })();
     </script>
 </body>
 </html>

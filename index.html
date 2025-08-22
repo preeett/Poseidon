@@ -8,14 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Baskerville+Old+Face&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baskerville+Old+Face&family=Candara&display=swap" rel="stylesheet">
     <style>
         html {
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'Baskerville Old Face', Baskerville, 'Inter', sans-serif;
+            font-family: 'Candara', Calibri, 'Inter', sans-serif;
             background-color: #0d1117; /* Dark background for a space/deep-sea feel */
             color: #c9d1d9; /* Light text for contrast */
         }
@@ -25,6 +24,9 @@
             background-position: center;
             background-attachment: fixed; /* Parallax effect */
             filter: brightness(0.70); /* Decreases the image exposure */
+        }
+        .bg-hero h1 {
+            font-family: 'Baskerville Old Face', Baskerville, serif;
         }
         .nav-link:hover {
             color: #58a6ff; /* A lighter blue on hover */
@@ -39,6 +41,35 @@
         .section-title {
             color: #58a6ff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        /* Increased font size for content sections */
+        .content-section h2, .content-section h3 {
+            font-size: 1.5rem; /* Base font size */
+        }
+        .content-section p {
+            font-size: 1rem; /* Base font size */
+        }
+        @media (min-width: 768px) {
+            .content-section h2 {
+                font-size: 2.5rem;
+            }
+            .content-section h3 {
+                font-size: 1.75rem;
+            }
+            .content-section p {
+                font-size: 1.125rem;
+            }
+        }
+
+        /* ====== ADDED: reveal transition styles (no markup changes) ====== */
+        .section-transition {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .section-transition.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -88,19 +119,32 @@
     <main class="container mx-auto">
         <!-- The World of Poseidon Section -->
         <section id="world" class="content-section bg-gray-900 rounded-xl shadow-xl my-10">
-            <h2 class="section-title text-4xl font-bold mb-8 text-center">The World of Poseidon</h2>
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                     <img src="https://placehold.co/600x400/1e293b/c9d1d9?text=Hydrothermal+Vent" alt="Conceptual image of a hydrothermal vent on Poseidon" class="rounded-xl shadow-lg w-full">
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold mb-4">A Global Ocean Powered by Geology</h3>
+                    <h3 class="text-3xl font-bold mb-4">Chemosynthesis</h3>
                     <p class="text-md leading-relaxed mb-4">
-                        Poseidon, a super-Earth with an immense, global ocean, orbits a dim red dwarf star. The lack of significant starlight means that life cannot rely on photosynthesis. Instead, Poseidon's very foundation supports life through a highly active core and thin crust, creating a planet-wide network of intense geothermal heat and constant volcanic activity.
+                        Chemosynthesis is the process by which certain organisms produce food (organic compounds) using energy from chemical reactions, instead of sunlight. Seawater seeps down through cracks on the ocean floor, gets superheated by magma below, reacts with hot rocks (dissolving minerals and gases), and then gushes back out as hydrothermal vent fluid.
                     </p>
                     <p class="text-md leading-relaxed">
                         Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide ($H_2S$), methane ($CH_4$), and dissolved iron ($Fe^{2+}$). These serve as the fundamental energy sources for all life on the planet.
                     </p>
+                </div>
+            </div>
+            
+            <!-- NEW SECTION: Formation of Energy/Heat -->
+            <div class="grid md:grid-cols-2 gap-12 items-center mt-12">
+                <div>
+                    <h3 class="text-3xl font-bold mb-4">Formation of Heat/Energy</h3>
+                    <p class="text-md leading-relaxed mb-4">
+                        Water seeps into cracks in ultramafic rocks (rich in Fe, Mg). Produces molecular hydrogen (H₂) which is primary energy carrier for microbes. Hot water dissolves minerals from rocks which releases methane (CH₄), hydrogen sulfide (H₂S), ammonia (NH₃), CO₂.These compounds are electron donors and carbon sources for life. Eruptions release SO₂, H₂S which are more energy subtrates. Cosmic rays + water produce small amounts of H₂ and oxidants.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Geological+Activity" alt="Conceptual image of Poseidon's active core" class="rounded-xl shadow-lg w-full">
                 </div>
             </div>
         </section>
@@ -112,10 +156,17 @@
                 <!-- Siphonophore Drifters -->
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div class="md:w-1/2">
-                        <h3 class="text-3xl font-bold mb-4">The Siphonophore Drifters</h3>
+                        <h3 class="text-3xl font-bold mb-4">Ideal Chemosynthetic Planet</h3>
                         <p class="text-md leading-relaxed mb-4">
-                            Resembling colossal, bioluminescent jellyfish, these creatures are composite organisms known as "Siphons." Their bodies contain specialized organs filled with symbiotic bacteria that perform chemosynthesis, processing dissolved chemicals from the water. They communicate through bursts of light and chemical signals in the perpetual darkness.
-                        </p>
+                        <p class="text-md leading-relaxed mb-4">
+                        Poseidon is a water world, entirely covered by deep oceans, with a radius slightly smaller than Earth and a gravity just enough to hold its waters and atmosphere. Beneath the waves, the ocean floor is made of basalt and ultramafic rocks, riddled with cracks and ridges. Here, hydrothermal vents gush hot, mineral-rich fluids, releasing hydrogen, methane, and hydrogen sulfide — the very fuel for life.
+                    </p>
+                    <p class="text-md leading-relaxed mb-4">
+                        The atmosphere is well balanced, mostly nitrogen and carbon dioxide, with traces of methane and sulfur gases. It protects the oceans from harmful radiation and keeps the chemical ingredients dissolved, ready for microbes to use. Sunlight barely reaches the surface, but life doesn’t need it.
+                    </p>
+                    <p class="text-md leading-relaxed">
+                        Near the vents, microbes thrive, using the chemicals to build organic matter. These microbial communities grow, spread across the oceans, and over time support more complex, multicellular life. On Poseidon, life doesn’t rely on the sun — it flourishes purely on the planet’s chemistry, proving that wherever energy, water, and minerals exist, life can find a way.
+                    </p>                        </p>
                     </div>
                     <div class="md:w-1/2">
                         <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Siphonophore+Creature" alt="Conceptual image of a Siphonophore Drifter" class="rounded-xl shadow-lg w-full">
@@ -125,9 +176,9 @@
                 <!-- Armored Grazers -->
                 <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                     <div class="md:w-1/2">
-                        <h3 class="text-3xl font-bold mb-4">The Armored Grazers</h3>
+                        <h3 class="text-3xl font-bold mb-4">Evolution of Life</h3>
                         <p class="text-md leading-relaxed mb-4">
-                            Slow-moving, crab-like creatures with thick, mineral-plated shells, these "Lithovores" graze on the dense microbial mats surrounding the vents. Their shells, made of calcium carbonate and iron sulfides, provide both formidable protection and a metallic appearance.
+                           Life begins with organic molecules forming naturally in the mineral-rich, hot vent environment. Reactions between water and rocks produce amino acids, lipids, and simple sugars microbes appear near hydrothermal vents. They use chemical energy from H₂, CH₄, H₂S, and CO₂ to make organic matter. Microbial mats form and expand, creating the first stable ecosystems around vents.Microbes slowly spread away from vents via ocean currents and mineral cracks. Populations diversify into different metabolic types. The global ocean begins to host widespread microbial life, entirely supported by chemical energy.Over time, some microbial colonies aggregate into multicellular structures. Simple organisms like tube-like grazers or filter feeders evolve, feeding on microbial mats. Predators and scavengers emerge, forming a complex chemosynthetic food web.The planet now hosts diverse species across the oceans, all dependent on chemical energy. Energy flows from hydrothermal vents → microbes → multicellular organisms → predators. Life is stable, self-sustaining, and global, without any need for sunlight.
                         </p>
                     </div>
                     <div class="md:w-1/2">
@@ -138,7 +189,7 @@
                 <!-- Predatory Hunters -->
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div class="md:w-1/2">
-                        <h3 class="text-3xl font-bold mb-4">The Predatory Hunters</h3>
+                        <h3 class="text-3xl font-bold mb-4">Family Tree</h3>
                         <p class="text-md leading-relaxed mb-4">
                             The "Apexes" are the top predators, sleek and agile. They have evolved without eyes, instead using a form of chemosensory echolocation. They send out unique chemical pulses that map their surroundings, allowing them to hunt Siphons and Lithovores with incredible precision in the complete darkness.
                         </p>
@@ -147,12 +198,25 @@
                         <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Apex+Predator+Creature" alt="Conceptual image of an Apex Hunter" class="rounded-xl shadow-lg w-full">
                     </div>
                 </div>
+
+                <!-- NEW SECTION: What Ifs? -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-8 mt-12">
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold mb-4">What Ifs?</h3>
+                        <p class="text-md leading-relaxed mb-4">
+                            As we envision Poseidon, we're left with many questions. What if a major tectonic shift created a new, temporary landmass? What if a massive volcanic event changed the chemical composition of the entire ocean? Could life adapt to a new dominant energy source? What new forms of life might evolve? The possibilities are as deep as the ocean itself.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Future+of+Poseidon" alt="Conceptual image of the future of Poseidon" class="rounded-xl shadow-lg w-full">
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- The Simulation Section -->
         <section id="simulation" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 text-center">
-            <h2 class="section-title text-4xl font-bold mb-8">Witness Poseidon in Motion</h2>
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
             <p class="mb-8 max-w-3xl mx-auto">
                 Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
             </p>
@@ -199,6 +263,30 @@
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+
+        /* ====== ADDED: minimal reveal-on-scroll with no markup changes ====== */
+        (function() {
+            const revealTargets = [
+                document.querySelector('header#home'),
+                ...document.querySelectorAll('section.content-section'),
+                document.querySelector('footer')
+            ].filter(Boolean);
+
+            // add initial transition class
+            revealTargets.forEach(el => el.classList.add('section-transition'));
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible'); // replayable when scrolling back
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            revealTargets.forEach(el => io.observe(el));
+        })();
     </script>
 </body>
 </html>

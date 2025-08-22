@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poseidon: An Aquatic Chemosynthetic World</title>
+    <!-- Load Tailwind CSS for modern, responsive styling. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baskerville+Old+Face&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Baskerville Old Face', Baskerville, 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background for a space/deep-sea feel */
+            color: #c9d1d9; /* Light text for contrast */
+        }
+        .bg-hero {
+            background-image: url('poseidon-bg.jpg'); /* Updated URL to your file name */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            filter: brightness(0.70); /* Decreases the image exposure */
+        }
+        .nav-link:hover {
+            color: #58a6ff; /* A lighter blue on hover */
+            transition: color 0.3s;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .content-section {
+            padding: 80px 20px;
+        }
+        .section-title {
+            color: #58a6ff;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-xl">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-white nav-link">Poseidon</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#world" class="nav-link">The World</a>
+                <a href="#biosphere" class="nav-link">The Biosphere</a>
+                <a href="#simulation" class="nav-link">Simulation</a>
+                <a href="#about" class="nav-link">About Us</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-xl">
+            <a href="#world" class="block py-2 px-6 nav-link">The World</a>
+            <a href="#biosphere" class="block py-2 px-6 nav-link">The Biosphere</a>
+            <a href="#simulation" class="block py-2 px-6 nav-link">Simulation</a>
+            <a href="#about" class="block py-2 px-6 nav-link">About Us</a>
+        </div>
+    </nav>
+
+    <!-- Home Section (Hero) -->
+    <header id="home" class="relative bg-hero h-screen flex items-center justify-center text-center text-white">
+        <div class="bg-black bg-opacity-50 p-10 rounded-xl shadow-lg">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4">Poseidon: A World Beyond Sunlight</h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
+                Explore a hypothetical ocean world where life thrives not on photosynthesis, but on the boundless chemical energy of its geologically active core.
+            </p>
+            <a href="#world" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300">
+                Discover Poseidon
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto">
+        <!-- The World of Poseidon Section -->
+        <section id="world" class="content-section bg-gray-900 rounded-xl shadow-xl my-10">
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">The World of Poseidon</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://placehold.co/600x400/1e293b/c9d1d9?text=Hydrothermal+Vent" alt="Conceptual image of a hydrothermal vent on Poseidon" class="rounded-xl shadow-lg w-full">
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold mb-4">A Global Ocean Powered by Geology</h3>
+                    <p class="text-md leading-relaxed mb-4">
+                        Poseidon, a super-Earth with an immense, global ocean, orbits a dim red dwarf star. The lack of significant starlight means that life cannot rely on photosynthesis. Instead, Poseidon's very foundation supports life through a highly active core and thin crust, creating a planet-wide network of intense geothermal heat and constant volcanic activity.
+                    </p>
+                    <p class="text-md leading-relaxed">
+                        Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide ($H_2S$), methane ($CH_4$), and dissolved iron ($Fe^{2+}$). These serve as the fundamental energy sources for all life on the planet.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Biosphere Section -->
+        <section id="biosphere" class="content-section bg-gray-900 rounded-xl shadow-xl my-10">
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
+            <div class="grid gap-12">
+                <!-- Siphonophore Drifters -->
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold mb-4">The Siphonophore Drifters</h3>
+                        <p class="text-md leading-relaxed mb-4">
+                            Resembling colossal, bioluminescent jellyfish, these creatures are composite organisms known as "Siphons." Their bodies contain specialized organs filled with symbiotic bacteria that perform chemosynthesis, processing dissolved chemicals from the water. They communicate through bursts of light and chemical signals in the perpetual darkness.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Siphonophore+Creature" alt="Conceptual image of a Siphonophore Drifter" class="rounded-xl shadow-lg w-full">
+                    </div>
+                </div>
+
+                <!-- Armored Grazers -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-8">
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold mb-4">The Armored Grazers</h3>
+                        <p class="text-md leading-relaxed mb-4">
+                            Slow-moving, crab-like creatures with thick, mineral-plated shells, these "Lithovores" graze on the dense microbial mats surrounding the vents. Their shells, made of calcium carbonate and iron sulfides, provide both formidable protection and a metallic appearance.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Lithovore+Creature" alt="Conceptual image of an Armored Grazer" class="rounded-xl shadow-lg w-full">
+                    </div>
+                </div>
+
+                <!-- Predatory Hunters -->
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold mb-4">The Predatory Hunters</h3>
+                        <p class="text-md leading-relaxed mb-4">
+                            The "Apexes" are the top predators, sleek and agile. They have evolved without eyes, instead using a form of chemosensory echolocation. They send out unique chemical pulses that map their surroundings, allowing them to hunt Siphons and Lithovores with incredible precision in the complete darkness.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Apex+Predator+Creature" alt="Conceptual image of an Apex Hunter" class="rounded-xl shadow-lg w-full">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Simulation Section -->
+        <section id="simulation" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 text-center">
+            <h2 class="section-title text-4xl font-bold mb-8">Witness Poseidon in Motion</h2>
+            <p class="mb-8 max-w-3xl mx-auto">
+                Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
+            </p>
+            <!-- Placeholder for your friend's simulation. -->
+            <!-- You will replace this with an iframe pointing to their simulation's URL. -->
+            <div class="relative w-full aspect-video rounded-xl shadow-lg overflow-hidden">
+                <div class="absolute inset-0 bg-gray-800 flex items-center justify-center p-4">
+                    <p class="text-white text-lg font-mono">
+                        &lt;iframe src="YOUR_SIMULATION_URL_HERE" width="100%" height="100%"&gt;&lt;/iframe&gt;
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="content-section bg-gray-900 rounded-xl shadow-xl my-10">
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
+            <div class="max-w-3xl mx-auto text-center">
+                <p class="text-md leading-relaxed mb-4">
+                    This project was created for the NASA Space Apps Hackathon. We are a team of two: a concept designer/web developer (your role) and a 3D simulation artist (your friend's role). Our goal was to push the boundaries of astrobiology and planetary science by envisioning life beyond Earth's traditional parameters.
+                </p>
+                <p class="text-md leading-relaxed font-bold">
+                    Problem Statement: Beyond Sunlight: An Aquatic Chemosynthetic World.
+                </p>
+                <p class="text-sm mt-4">
+                    You can find more details about our project on our GitHub repository.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-t-xl">
+        <p class="text-sm">
+            &copy; 2025 Team Poseidon. All rights reserved. Made for NASA Space Apps Hackathon.
+        </p>
+    </footer>
+
+    <script>
+        // JavaScript for mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

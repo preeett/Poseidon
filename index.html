@@ -85,19 +85,32 @@
             transform-style: preserve-3d;
             perspective: 600px;
         }
-        /* ====== NEW MICROBE STYLING ====== */
+        /* ====== UPDATED MICROBE STYLING ====== */
         .star {
             position: absolute;
             background-color: #7fffd4; /* Aqua-green bioluminescent color */
-            /* This complex border-radius creates an organic, blob-like shape */
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             box-shadow: 0 0 5px #7fffd4, 0 0 10px #7fffd4; /* Adds a soft glow */
-            opacity: 0.7;
+            opacity: 0.6; /* Reduced brightness */
         }
-        /* ================================= */
-        .star.small { width: 4px; height: 4px; animation: moveStar 100s linear infinite; }
-        .star.medium { width: 6px; height: 6px; animation: moveStar 60s linear infinite; }
-        .star.large { width: 8px; height: 8px; animation: moveStar 30s linear infinite; }
+        .star.small { 
+            width: 2px; 
+            height: 2px; 
+            animation: moveStar 100s linear infinite;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Globular shape */
+        }
+        .star.medium { 
+            width: 4px; 
+            height: 3px; 
+            animation: moveStar 60s linear infinite;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; /* Elongated shape */
+        }
+        .star.large { 
+            width: 5px; 
+            height: 5px; 
+            animation: moveStar 30s linear infinite;
+            border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; /* Different globular shape */
+        }
+        /* ===================================== */
         
         /* Flowchart Styles */
         .flowchart-container { max-width: 800px; margin: auto; display: flex; flex-direction: column; align-items: center; }

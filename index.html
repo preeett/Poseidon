@@ -36,6 +36,14 @@
         .bg-hero h1 {
             font-family: 'Baskerville Old Face', Baskerville, serif;
         }
+        /* ====== UPDATED NAV STYLES ====== */
+        #main-nav {
+            transition: transform 0.4s ease-out;
+        }
+        #main-nav.nav-hidden {
+            transform: translateY(-100%);
+        }
+        /* ================================ */
         .nav-link:hover {
             color: #58a6ff; /* A lighter blue on hover */
             transition: color 0.3s;
@@ -50,69 +58,23 @@
             color: #58a6ff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
-        /* Increased font size for content sections */
-        .content-section h2, .content-section h3 {
-            font-size: 1.5rem; /* Base font size */
-        }
-        .content-section p {
-            font-size: 1rem; /* Base font size */
-        }
+        .content-section h2, .content-section h3 { font-size: 1.5rem; }
+        .content-section p { font-size: 1rem; }
         @media (min-width: 768px) {
-            .content-section h2 {
-                font-size: 2.5rem;
-            }
-            .content-section h3 {
-                font-size: 1.75rem;
-            }
-            .content-section p {
-                font-size: 1.125rem;
-            }
+            .content-section h2 { font-size: 2.5rem; }
+            .content-section h3 { font-size: 1.75rem; }
+            .content-section p { font-size: 1.125rem; }
         }
-        /*
-         * Microbe Animation (formerly Starfield)
-         */
+        /* Microbe Animation */
         @keyframes moveStar {
             from { transform: translateY(0) rotate(0deg); }
             to { transform: translateY(-2000px) rotate(360deg); }
         }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -30;
-            pointer-events: none;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 600px;
-        }
-        /* ====== UPDATED MICROBE STYLING ====== */
-        .star {
-            position: absolute;
-            background-color: #7fffd4; /* Aqua-green bioluminescent color */
-            box-shadow: 0 0 5px #7fffd4, 0 0 10px #7fffd4; /* Adds a soft glow */
-            opacity: 0.6; /* Reduced brightness */
-        }
-        .star.small { 
-            width: 2px; 
-            height: 2px; 
-            animation: moveStar 100s linear infinite;
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; /* Globular shape */
-        }
-        .star.medium { 
-            width: 4px; 
-            height: 3px; 
-            animation: moveStar 60s linear infinite;
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; /* Elongated shape */
-        }
-        .star.large { 
-            width: 5px; 
-            height: 5px; 
-            animation: moveStar 30s linear infinite;
-            border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; /* Different globular shape */
-        }
-        /* ===================================== */
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -30; pointer-events: none; overflow: hidden; transform-style: preserve-3d; perspective: 600px; }
+        .star { position: absolute; background-color: #7fffd4; box-shadow: 0 0 5px #7fffd4, 0 0 10px #7fffd4; opacity: 0.6; }
+        .star.small { width: 2px; height: 2px; animation: moveStar 100s linear infinite; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+        .star.medium { width: 4px; height: 3px; animation: moveStar 60s linear infinite; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        .star.large { width: 5px; height: 5px; animation: moveStar 30s linear infinite; border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; }
         
         /* Flowchart Styles */
         .flowchart-container { max-width: 800px; margin: auto; display: flex; flex-direction: column; align-items: center; }
@@ -128,15 +90,8 @@
         .media-filter { filter: brightness(0.9) contrast(0.9); border: 2px solid #1e293b; }
 
         /* Smooth Transition Styles */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body class="antialiased">
@@ -147,7 +102,7 @@
     <div id="stars3" class="stars"></div>
 
     <!-- Navigation Bar -->
-    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-3xl">
+    <nav id="main-nav" class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-3xl">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold text-white nav-link">Poseidon</a>
             <div class="hidden md:flex space-x-8">
@@ -291,17 +246,17 @@
                     </div>
                 </div>
                 
-                <!-- ====== NEW GRAPH SECTION ====== -->
+                <!-- Graph Section -->
                 <div class="mt-12">
                     <h3 class="text-3xl font-bold mb-4 text-center">Microbial Population Dynamics</h3>
                     <p class="text-md leading-relaxed mb-8 text-center max-w-2xl mx-auto">
                         Life on Poseidon is resilient, but it thrives within a specific temperature range. This graph illustrates how the overall microbial population responds to changes in the ambient deep-sea temperature.
                     </p>
-                    <div class="bg-black/50 p-6 rounded-3xl shadow-lg">
+                    <!-- ====== SMALLER GRAPH CONTAINER ====== -->
+                    <div class="bg-black/50 p-6 rounded-3xl shadow-lg max-w-3xl mx-auto">
                         <canvas id="microbeChart"></canvas>
                     </div>
                 </div>
-                <!-- ============================ -->
             </div>
         </section>
 
@@ -348,32 +303,32 @@
     </footer>
 
     <script>
-        // JavaScript for mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Starfield animation generation
-        function generateStars(containerId, numStars, sizeClass, animationDuration) {
-            const container = document.getElementById(containerId);
-            for (let i = 0; i < numStars; i++) {
-                let star = document.createElement('div');
-                star.className = 'star ' + sizeClass;
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.animationDelay = Math.random() * animationDuration + 's';
-                star.style.animationDuration = animationDuration + Math.random() * 30 + 's';
-                star.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
-                container.appendChild(star);
-            }
-        }
-        generateStars('stars', 200, 'small', 100);
-        generateStars('stars2', 50, 'medium', 60);
-        generateStars('stars3', 20, 'large', 30);
-
         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Starfield animation generation
+            function generateStars(containerId, numStars, sizeClass, animationDuration) {
+                const container = document.getElementById(containerId);
+                for (let i = 0; i < numStars; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'star ' + sizeClass;
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDelay = Math.random() * animationDuration + 's';
+                    star.style.animationDuration = animationDuration + Math.random() * 30 + 's';
+                    star.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+                    container.appendChild(star);
+                }
+            }
+            generateStars('stars', 200, 'small', 100);
+            generateStars('stars2', 50, 'medium', 60);
+            generateStars('stars3', 20, 'large', 30);
+
             // Smooth Transition Script
             const faders = document.querySelectorAll('.fade-in');
             const observer = new IntersectionObserver((entries) => {
@@ -390,7 +345,7 @@
                 observer.observe(fader);
             });
 
-            // ====== NEW GRAPH SCRIPT ======
+            // Graph Script
             const ctx = document.getElementById('microbeChart').getContext('2d');
             const microbeChart = new Chart(ctx, {
                 type: 'line',
@@ -402,7 +357,7 @@
                         backgroundColor: 'rgba(127, 255, 212, 0.2)',
                         borderColor: 'rgba(127, 255, 212, 1)',
                         borderWidth: 2,
-                        tension: 0.4, // Makes the line curved
+                        tension: 0.4,
                         fill: true,
                         pointBackgroundColor: 'rgba(127, 255, 212, 1)',
                         pointRadius: 4
@@ -410,45 +365,35 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: true, // Ensures the chart fits the container
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Population Density',
-                                color: '#c9d1d9'
-                            },
-                            ticks: {
-                                color: '#c9d1d9'
-                            },
-                            grid: {
-                                color: 'rgba(201, 209, 217, 0.2)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Ambient Temperature',
-                                color: '#c9d1d9'
-                            },
-                            ticks: {
-                                color: '#c9d1d9'
-                            },
-                            grid: {
-                                color: 'rgba(201, 209, 217, 0.2)'
-                            }
-                        }
+                        y: { beginAtZero: true, title: { display: true, text: 'Population Density', color: '#c9d1d9' }, ticks: { color: '#c9d1d9' }, grid: { color: 'rgba(201, 209, 217, 0.2)' } },
+                        x: { title: { display: true, text: 'Ambient Temperature', color: '#c9d1d9' }, ticks: { color: '#c9d1d9' }, grid: { color: 'rgba(201, 209, 217, 0.2)' } }
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#c9d1d9'
-                            }
-                        }
-                    }
+                    plugins: { legend: { labels: { color: '#c9d1d9' } } }
                 }
             });
-            // ============================
+            
+            // ====== AUTO-HIDING NAV SCRIPT ======
+            const nav = document.getElementById('main-nav');
+            let lastScrollY = window.scrollY;
+
+            // Initially hide the nav if not at the top
+            if(lastScrollY > 100) {
+                nav.classList.add('nav-hidden');
+            }
+
+            window.addEventListener('scroll', () => {
+                if (lastScrollY < window.scrollY && window.scrollY > 100) {
+                    // Scrolling down
+                    nav.classList.add('nav-hidden');
+                } else {
+                    // Scrolling up
+                    nav.classList.remove('nav-hidden');
+                }
+                lastScrollY = window.scrollY;
+            });
+            // ===================================
         });
     </script>
 </body>

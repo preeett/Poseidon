@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poseidon: An Aquatic Chemosynthetic World</title>
-    <!-- Load Tailwind CSS for modern, responsive styling. -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,21 +15,15 @@
         }
         body {
             font-family: 'Candara', Calibri, 'Inter', sans-serif;
-            background-color: #000000; /* Dark background for a space/deep-sea feel */
-            color: #c9d1d9; /* Light text for contrast */
+            background-color: #0d1117;
+            color: #c9d1d9;
         }
-        .bg-hero-container {
+        .bg-hero {
             background-image: url('poseidon-bg.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: fixed;
             filter: brightness(0.70);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -10;
         }
         .bg-hero h1 {
             font-family: 'Baskerville Old Face', Baskerville, serif;
@@ -65,112 +59,22 @@
                 font-size: 1.125rem;
             }
         }
-        @keyframes moveStar {
-            from { transform: translateY(0) rotate(0deg); }
-            to { transform: translateY(-2000px) rotate(360deg); }
+        /* === Transitions === */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -30;
-            pointer-events: none;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 600px;
-        }
-        .star {
-            position: absolute;
-            background-color: #ffffff;
-            border-radius: 50%;
-        }
-        .star.small {
-            width: 1px;
-            height: 1px;
-            animation: moveStar 100s linear infinite;
-        }
-        .star.medium {
-            width: 2px;
-            height: 2px;
-            animation: moveStar 60s linear infinite;
-        }
-        .star.large {
-            width: 3px;
-            height: 3px;
-            animation: moveStar 30s linear infinite;
-        }
-        /* ====== PERFORMANCE OPTIMIZATION ====== */
-        /* This new class will be added via JavaScript to pause the animation. */
-        .animation-paused {
-            animation-play-state: paused !important;
-        }
-        /* ==================================== */
-        .flowchart-container {
-            max-width: 800px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .flow-node {
-            background-color: #34495e;
-            border: 2px solid #4e6b8a;
-            border-radius: 0.75rem;
-            padding: 1.5rem 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .flow-node:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        }
-        .flow-node-title {
-            font-weight: 600;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-        }
-        .flow-node-subtitle {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-        .connector-line {
-            width: 2px;
-            height: 2rem;
-            background-color: #bdc3c7;
-            margin-bottom: 2rem;
-        }
-        .branch-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .branch-node {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .media-filter {
-            filter: brightness(0.9) contrast(0.9);
-            border: 2px solid #1e293b;
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="stars" class="stars"></div>
-    <div id="stars2" class="stars"></div>
-    <div id="stars3" class="stars"></div>
-
-    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-3xl">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-xl">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold text-white nav-link">Poseidon</a>
             <div class="hidden md:flex space-x-8">
@@ -181,11 +85,15 @@
             </div>
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-3xl">
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-xl">
             <a href="#world" class="block py-2 px-6 nav-link">The World</a>
             <a href="#biosphere" class="block py-2 px-6 nav-link">The Biosphere</a>
             <a href="#simulation" class="block py-2 px-6 nav-link">Simulation</a>
@@ -193,167 +101,74 @@
         </div>
     </nav>
 
+    <!-- Hero -->
     <header id="home" class="relative bg-hero h-screen flex items-center justify-center text-center text-white">
-        <div class="bg-hero-container"></div>
-        <div class="bg-black bg-opacity-50 p-10 rounded-3xl shadow-lg relative">
+        <div class="bg-black bg-opacity-50 p-10 rounded-xl shadow-lg fade-in">
             <h1 class="text-5xl md:text-7xl font-bold mb-4">Poseidon: A World Beyond Sunlight</h1>
             <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
                 Explore a hypothetical ocean world where life thrives not on photosynthesis, but on the boundless chemical energy of its geologically active core.
             </p>
-            <a href="#world" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300">
+            <a href="#world"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300">
                 Discover Poseidon
             </a>
         </div>
     </header>
 
     <main class="container mx-auto">
-        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
-            <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
+        <!-- World -->
+        <section id="world" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 fade-in">
+            <h2 class="section-title text-4xl font-bold mb-8 text-center">The World of Poseidon</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <video class="rounded-3xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
-                        <source src="Hydrothermal vent.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <img src="https://placehold.co/600x400/1e293b/c9d1d9?text=Hydrothermal+Vent"
+                        alt="Hydrothermal Vent" class="rounded-xl shadow-lg w-full">
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold mb-4">Chemosynthesis</h3>
+                    <h3 class="text-3xl font-bold mb-4">A Global Ocean Powered by Geology</h3>
                     <p class="text-md leading-relaxed mb-4">
-                        Chemosynthesis is the process by which certain organisms produce food (organic compounds) using energy from chemical reactions, instead of sunlight. Seawater seeps down through cracks on the ocean floor, gets superheated by magma below, reacts with hot rocks (dissolving minerals and gases), and then gushes back out as hydrothermal vent fluid.
+                        Poseidon, a super-Earth with an immense, global ocean, orbits a dim red dwarf star. The lack of significant starlight means that life cannot rely on photosynthesis. Instead, Poseidon's very foundation supports life through a highly active core and thin crust, creating a planet-wide network of intense geothermal heat and constant volcanic activity.
                     </p>
                     <p class="text-md leading-relaxed">
-                        Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide ($H_2S$), methane ($CH_4$), and dissolved iron ($Fe^{2+}$). These serve as the fundamental energy sources for all life on the planet.
+                        Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide (H₂S), methane (CH₄), and dissolved iron (Fe²⁺). These serve as the fundamental energy sources for all life on the planet.
                     </p>
-                </div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12 items-center mt-12">
-                <div>
-                    <h3 class="text-3xl font-bold mb-4">Formation of Heat/Energy</h3>
-                    <p class="text-md leading-relaxed mb-4">
-                        Water seeps into cracks in ultramafic rocks (rich in Fe, Mg). Produces molecular hydrogen (H₂) which is primary energy carrier for microbes. Hot water dissolves minerals from rocks which releases methane (CH₄), hydrogen sulfide (H₂S), ammonia (NH₃), CO₂.These compounds are electron donors and carbon sources for life. Eruptions release SO₂, H₂S which are more energy subtrates. Cosmic rays + water produce small amounts of H₂ and oxidants.
-                    </p>
-                </div>
-                <div>
-                    <video class="rounded-3xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
-                        <source src="Geological activity.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
                 </div>
             </div>
         </section>
 
-        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <!-- Biosphere -->
+        <section id="biosphere" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
             <div class="grid gap-12">
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div class="md:w-1/2">
-                        <h3 class="text-3xl font-bold mb-4">Ideal Chemosynthetic Planet</h3>
+                        <h3 class="text-3xl font-bold mb-4">The Siphonophore Drifters</h3>
                         <p class="text-md leading-relaxed mb-4">
-                            Poseidon is a water world, entirely covered by deep oceans, with a radius slightly smaller than Earth and a gravity just enough to hold its waters and atmosphere. Beneath the waves, the ocean floor is made of basalt and ultramafic rocks, riddled with cracks and ridges. Here, hydrothermal vents present throughout the bedrock gush hot, mineral-rich fluids, releasing hydrogen, methane, and hydrogen sulfide which act as the fuel for life.
-                        </p>
-                        <p class="text-md leading-relaxed mb-4">
-                            The atmosphere is well balanced with a surface pressure of 2-3 bar, mostly composed of nitrogen and carbon dioxide, with traces of methane and sulfur gases. It protects the oceans from harmful radiation and keeps the chemical ingredients dissolved, ready for microbes to use. Sunlight barely reaches the surface, but life doesn’t need it.
-                        </p>
-                        <p class="text-md leading-relaxed">
-                            Near the vents, microbes thrive, using the chemicals to build organic matter. These microbial communities grow, spread across the oceans, and over time support more complex, multicellular life. On Poseidon, life doesn’t rely on the sun — it flourishes purely on the planet’s chemistry, proving that wherever energy, water, and minerals exist, life can find a way.                            
+                            Resembling colossal, bioluminescent jellyfish, these creatures are composite organisms known as "Siphons." Their bodies contain specialized organs filled with symbiotic bacteria that perform chemosynthesis, processing dissolved chemicals from the water.
                         </p>
                     </div>
                     <div class="md:w-1/2">
-                        <img src="Poseidon.jpg" alt="Conceptual image of a Siphonophore Drifter" class="rounded-3xl shadow-lg w-full media-filter">
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row-reverse items-center gap-8">
-                    <div class="md:w-1/2">
-                        <h3 class="text-3xl font-bold mb-4">Evolution of Life <span class="text-lg text-gray-400">(Video)</span></h3>
-                        <p class="text-md leading-relaxed mb-4">
-                            Slow-moving, crab-like creatures with thick, mineral-plated shells, these "Lithovores" graze on the dense microbial mats surrounding the vents. Their shells, made of calcium carbonate and iron sulfides, provide both formidable protection and a metallic appearance.
-                        </p>
-                    </div>
-                    <div class="md:w-1/2">
-                        <video autoplay loop muted playsinline class="rounded-3xl shadow-lg w-full media-filter">
-                            <source src="eol.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-                <div class="flex flex-col items-center gap-8">
-                    <h3 class="text-3xl font-bold mb-4">Family Tree</h3>
-                    <p class="text-md leading-relaxed mb-4 text-center max-w-2xl mx-auto">
-                        The following flowchart visualizes the evolutionary path of life on Poseidon, from the initial chemical gradients to a fully-developed ecosystem.
-                    </p>
-                    <div class="flowchart-container">
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrothermal Vents</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node">
-                                <div class="flow-node rounded-3xl"><div class="flow-node-title">Prebiotic Chemistry</div><div class="flow-node-subtitle">(amino acids, lipids, sugars)</div></div>
-                            </div>
-                            <div class="branch-node">
-                                <div class="flow-node rounded-3xl"><div class="flow-node-title">Chemical Gradients</div><div class="flow-node-subtitle">(H₂, CH₄, H₂S, CO₂)</div></div>
-                            </div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Protocells</div></div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Life</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Methanogens</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Sulfur Oxidizers</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrogen Users</div></div></div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Mats</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Simple Multicellular Life</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Filter Feeders & Grazers</div></div></div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Predators / Scavengers</div></div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Fully Developed Ecosystem</div></div>
-                    </div>
-                </div>
-                <div class="mt-12">
-                    <h3 class="text-3xl font-bold mb-4 text-center">What Ifs?</h3>
-                    <p class="text-md leading-relaxed mb-8 text-center max-w-2xl mx-auto">
-                        As we envision Poseidon, we're left with many questions. These scenarios challenge us to consider how life could adapt and evolve under new, dramatic circumstances.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Hydrothermal vents stop or decrease</h4><p class="text-sm leading-relaxed">Energy supply drops, causing microbial mats to shrink. Higher life struggles and the ecosystem collapses in vent regions.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Ocean depth decreases significantly</h4><p class="text-sm leading-relaxed">Reduced vent pressure leads to less chemical solubility and fewer habitats. Temperature may fluctuate more, causing microbial stress.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Atmosphere becomes thinner (&lt;1 bar)</h4><p class="text-sm leading-relaxed">Less radiation protection and dissolved gases decrease. This makes surface microbes vulnerable and drops the chemical energy availability.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">CO₂ levels drop drastically</h4><p class="text-sm leading-relaxed">Microbes can't fix carbon efficiently, leading to slower growth and less biomass for higher organisms.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Ocean temperature rises too much (&gt;320 K)</h4><p class="text-sm leading-relaxed">Many microbes cannot survive. Chemical reactions may shift, leading to ecosystem collapse or requiring significant species adaptation.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Excess volcanic activity</h4><p class="text-sm leading-relaxed">Overproduction of toxic gases like H₂S and SO₂ causes a chemical imbalance, putting stress on microbial communities.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Ocean currents weaken</h4><p class="text-sm leading-relaxed">Slower dispersal of microbes leads to local extinctions and reduced genetic exchange and biodiversity.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Methane (CH₄) availability decreases</h4><p class="text-sm leading-relaxed">Reduced chemical fuel for methanogens results in slower energy production and lower ecosystem productivity.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">Life spreads beyond vents</h4><p class="text-sm leading-relaxed">Creates secondary habitats and a more diverse ecosystem, leading to higher stability and resilience.</p></div>
-                        <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">New chemical sources appear</h4><p class="text-sm leading-relaxed">Introduces new niches, promoting species diversification and more complex ecosystem dynamics.</p></div>
+                        <img src="https://placehold.co/600x400/2a3d54/c9d1d9?text=Siphonophore+Creature"
+                            alt="Siphonophore" class="rounded-xl shadow-lg w-full">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <!-- Simulation -->
+        <section id="simulation" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 text-center fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
-            <p class="mb-8 max-w-3xl mx-auto">
-                Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
-            </p>
-            <div class="relative w-full aspect-video rounded-3xl shadow-lg overflow-hidden border-2 border-gray-700">
-                <iframe 
-                    src="sim3.html" 
-                    class="absolute top-0 left-0 w-full h-full" 
-                    style="border:none;" 
-                    title="Poseidon Simulation"
-                    onmouseover="this.focus()"
-                    loading="lazy"> 
-                </iframe>
+            <div class="relative w-full aspect-video rounded-xl shadow-lg overflow-hidden">
+                <div class="absolute inset-0 bg-gray-800 flex items-center justify-center p-4">
+                    <p class="text-white text-lg font-mono">
+                        &lt;iframe src="YOUR_SIMULATION_URL_HERE" width="100%" height="100%"&gt;&lt;/iframe&gt;
+                    </p>
+                </div>
             </div>
         </section>
 
-        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <!-- About -->
+        <section id="about" class="content-section bg-gray-900 rounded-xl shadow-xl my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-md leading-relaxed mb-4">
@@ -362,80 +177,36 @@
                 <p class="text-md leading-relaxed font-bold">
                     Problem Statement: Beyond Sunlight: An Aquatic Chemosynthetic World.
                 </p>
-                <p class="text-sm mt-4">
-                    You can find more details about our project on our GitHub repository.
-                </p>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-3xl">
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center py-6 mt-10 rounded-t-xl">
         <p class="text-sm">
             &copy; 2025 Team Poseidon. All rights reserved. Made for NASA Space Apps Hackathon.
         </p>
     </footer>
 
     <script>
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-        });
-
+        // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-        
-        function generateStars(containerId, numStars, sizeClass, animationDuration) {
-            const container = document.getElementById(containerId);
-            for (let i = 0; i < numStars; i++) {
-                let star = document.createElement('div');
-                star.className = 'star ' + sizeClass;
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.animationDelay = Math.random() * animationDuration + 's';
-                star.style.animationDuration = animationDuration + Math.random() * 30 + 's';
-                star.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
-                container.appendChild(star);
-            }
-        }
 
-        // Reduced star count slightly for baseline performance improvement
-        generateStars('stars', 150, 'small', 100);
-        generateStars('stars2', 40, 'medium', 60);
-        generateStars('stars3', 15, 'large', 30);
-
-
-        // ====== PERFORMANCE OPTIMIZATION SCRIPT ======
-        document.addEventListener('DOMContentLoaded', () => {
-            const heroSection = document.getElementById('home');
-            const allStars = document.querySelectorAll('.star');
-
-            // This function will be called when the hero section enters or leaves the view
-            const observerCallback = (entries) => {
-                entries.forEach(entry => {
-                    // isIntersecting is true if the hero section is visible
-                    if (entry.isIntersecting) {
-                        // Hero is visible: play the animation
-                        allStars.forEach(star => star.classList.remove('animation-paused'));
-                    } else {
-                        // Hero is not visible: pause the animation
-                        allStars.forEach(star => star.classList.add('animation-paused'));
-                    }
-                });
-            };
-
-            // Create the observer
-            const observer = new IntersectionObserver(observerCallback, {
-                // The rootMargin of -10% means the animation will pause just before the hero is fully out of view
-                rootMargin: '-10%',
-                threshold: 0
+        // Section fade-in on scroll
+        const faders = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    obs.unobserve(entry.target);
+                }
             });
-
-            // Start observing the hero section
-            observer.observe(heroSection);
-        });
-        // ==========================================
+        }, { threshold: 0.2 });
+        faders.forEach(fader => observer.observe(fader));
     </script>
 </body>
 </html>

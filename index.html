@@ -6,6 +6,8 @@
     <title>Poseidon: An Aquatic Chemosynthetic World</title>
     <!-- Load Tailwind CSS for modern, responsive styling. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Chart.js for the graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baskerville+Old+Face&family=Candara&display=swap" rel="stylesheet">
@@ -288,6 +290,18 @@
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105"><h4 class="text-xl font-bold mb-2 text-blue-300">New chemical sources appear</h4><p class="text-sm leading-relaxed">Introduces new niches, promoting species diversification and more complex ecosystem dynamics.</p></div>
                     </div>
                 </div>
+                
+                <!-- ====== NEW GRAPH SECTION ====== -->
+                <div class="mt-12">
+                    <h3 class="text-3xl font-bold mb-4 text-center">Microbial Population Dynamics</h3>
+                    <p class="text-md leading-relaxed mb-8 text-center max-w-2xl mx-auto">
+                        Life on Poseidon is resilient, but it thrives within a specific temperature range. This graph illustrates how the overall microbial population responds to changes in the ambient deep-sea temperature.
+                    </p>
+                    <div class="bg-black/50 p-6 rounded-3xl shadow-lg">
+                        <canvas id="microbeChart"></canvas>
+                    </div>
+                </div>
+                <!-- ============================ -->
             </div>
         </section>
 
@@ -359,8 +373,8 @@
         generateStars('stars2', 50, 'medium', 60);
         generateStars('stars3', 20, 'large', 30);
 
-        // ====== NEW: SMOOTH TRANSITION SCRIPT ======
         document.addEventListener('DOMContentLoaded', () => {
+            // Smooth Transition Script
             const faders = document.querySelectorAll('.fade-in');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -370,13 +384,72 @@
                         entry.target.classList.remove('visible');
                     }
                 });
-            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+            }, { threshold: 0.1 }); 
 
             faders.forEach(fader => {
                 observer.observe(fader);
             });
+
+            // ====== NEW GRAPH SCRIPT ======
+            const ctx = document.getElementById('microbeChart').getContext('2d');
+            const microbeChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['275 K (-2°C)', '295 K (22°C)', '310 K (37°C)', '325 K (52°C)', '345 K (72°C)', '365 K (92°C)', '380 K (107°C)'],
+                    datasets: [{
+                        label: 'Relative Microbial Population',
+                        data: [5, 20, 95, 100, 60, 15, 2],
+                        backgroundColor: 'rgba(127, 255, 212, 0.2)',
+                        borderColor: 'rgba(127, 255, 212, 1)',
+                        borderWidth: 2,
+                        tension: 0.4, // Makes the line curved
+                        fill: true,
+                        pointBackgroundColor: 'rgba(127, 255, 212, 1)',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Population Density',
+                                color: '#c9d1d9'
+                            },
+                            ticks: {
+                                color: '#c9d1d9'
+                            },
+                            grid: {
+                                color: 'rgba(201, 209, 217, 0.2)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Ambient Temperature',
+                                color: '#c9d1d9'
+                            },
+                            ticks: {
+                                color: '#c9d1d9'
+                            },
+                            grid: {
+                                color: 'rgba(201, 209, 217, 0.2)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#c9d1d9'
+                            }
+                        }
+                    }
+                }
+            });
+            // ============================
         });
-        // ===========================================
     </script>
 </body>
 </html>

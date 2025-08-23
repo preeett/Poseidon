@@ -90,81 +90,34 @@
             background-color: #ffffff;
             border-radius: 50%;
         }
-        /* Small stars - far away, slow movement */
-        .star.small {
-            width: 1px;
-            height: 1px;
-            animation: moveStar 100s linear infinite;
+        .star.small { width: 1px; height: 1px; animation: moveStar 100s linear infinite; }
+        .star.medium { width: 2px; height: 2px; animation: moveStar 60s linear infinite; }
+        .star.large { width: 3px; height: 3px; animation: moveStar 30s linear infinite; }
+        
+        /* Flowchart Styles */
+        .flowchart-container { max-width: 800px; margin: auto; display: flex; flex-direction: column; align-items: center; }
+        .flow-node { background-color: #34495e; border: 2px solid #4e6b8a; border-radius: 0.75rem; padding: 1.5rem 2rem; text-align: center; margin-bottom: 2rem; position: relative; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: transform 0.2s, box-shadow 0.2s; }
+        .flow-node:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); }
+        .flow-node-title { font-weight: 600; font-size: 1.25rem; line-height: 1.75rem; }
+        .flow-node-subtitle { font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem; }
+        .connector-line { width: 2px; height: 2rem; background-color: #bdc3c7; margin-bottom: 2rem; }
+        .branch-container { display: flex; justify-content: center; align-items: flex-start; gap: 2rem; margin-bottom: 2rem; }
+        .branch-node { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Media Filter */
+        .media-filter { filter: brightness(0.9) contrast(0.9); border: 2px solid #1e293b; }
+
+        /* ====== NEW: SMOOTH TRANSITION STYLES ====== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        /* Medium stars - medium distance, medium speed */
-        .star.medium {
-            width: 2px;
-            height: 2px;
-            animation: moveStar 60s linear infinite;
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        /* Large stars - close, fast movement */
-        .star.large {
-            width: 3px;
-            height: 3px;
-            animation: moveStar 30s linear infinite;
-        }
-        /* New Flowchart Styles */
-        .flowchart-container {
-            max-width: 800px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .flow-node {
-            background-color: #34495e; /* Slightly lighter slate blue for nodes */
-            border: 2px solid #4e6b8a; /* Border color */
-            border-radius: 0.75rem;
-            padding: 1.5rem 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .flow-node:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        }
-        .flow-node-title {
-            font-weight: 600;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-        }
-        .flow-node-subtitle {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-        .connector-line {
-            width: 2px;
-            height: 2rem;
-            background-color: #bdc3c7; /* Light gray connector line */
-            margin-bottom: 2rem;
-        }
-        .branch-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .branch-node {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* New style for videos and images to blend in better */
-        .media-filter {
-            filter: brightness(0.9) contrast(0.9);
-            border: 2px solid #1e293b;
-        }
+        /* ========================================= */
     </style>
 </head>
 <body class="antialiased">
@@ -184,16 +137,12 @@
                 <a href="#simulation" class="nav-link">Simulation</a>
                 <a href="#about" class="nav-link">About Us</a>
             </div>
-            <!-- Mobile Menu Button -->
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-3xl">
             <a href="#world" class="block py-2 px-6 nav-link">The World</a>
             <a href="#biosphere" class="block py-2 px-6 nav-link">The Biosphere</a>
@@ -205,7 +154,7 @@
     <!-- Home Section (Hero) -->
     <header id="home" class="relative bg-hero h-screen flex items-center justify-center text-center text-white">
         <div class="bg-hero-container"></div>
-        <div class="bg-black bg-opacity-50 p-10 rounded-3xl shadow-lg relative">
+        <div class="bg-black bg-opacity-50 p-10 rounded-3xl shadow-lg relative fade-in">
             <h1 class="text-5xl md:text-7xl font-bold mb-4">Poseidon: A World Beyond Sunlight</h1>
             <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
                 Explore a hypothetical ocean world where life thrives not on photosynthesis, but on the boundless chemical energy of its geologically active core.
@@ -218,7 +167,7 @@
 
     <main class="container mx-auto">
         <!-- The World of Poseidon Section -->
-        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
@@ -237,8 +186,6 @@
                     </p>
                 </div>
             </div>
-            
-            <!-- NEW SECTION: Formation of Energy/Heat -->
             <div class="grid md:grid-cols-2 gap-12 items-center mt-12">
                 <div>
                     <h3 class="text-3xl font-bold mb-4">Formation of Heat/Energy</h3>
@@ -256,13 +203,11 @@
         </section>
 
         <!-- The Biosphere Section -->
-        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
             <div class="grid gap-12">
                 <!-- Siphonophore Drifters -->
                 <div class="flex flex-col md:flex-row items-center gap-8">
-                    <!-- ====== THIS IS THE FIX ====== -->
-                    <!-- Changed md:w-12 to md:w-1/2 to correctly balance the columns -->
                     <div class="md:w-1/2">
                         <h3 class="text-3xl font-bold mb-4">Ideal Chemosynthetic Planet</h3>
                         <p class="text-md leading-relaxed mb-4">
@@ -303,33 +248,7 @@
                         The following flowchart visualizes the evolutionary path of life on Poseidon, from the initial chemical gradients to a fully-developed ecosystem.
                     </p>
                     <div class="flowchart-container">
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrothermal Vents</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Prebiotic Chemistry</div><div class="flow-node-subtitle">(amino acids, lipids, sugars)</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Chemical Gradients</div><div class="flow-node-subtitle">(H₂, CH₄, H₂S, CO₂)</div></div></div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Protocells</div></div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Life</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Methanogens</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Sulfur Oxidizers</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrogen Users</div></div></div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Mats</div></div>
-                        <div class="connector-line"></div>
-                        <div class="branch-container">
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Simple Multicellular Life</div></div></div>
-                            <div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Filter Feeders & Grazers</div></div></div>
-                        </div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Predators / Scavengers</div></div>
-                        <div class="connector-line"></div>
-                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Fully Developed Ecosystem</div></div>
+                        <div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrothermal Vents</div></div><div class="connector-line"></div><div class="branch-container"><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Prebiotic Chemistry</div><div class="flow-node-subtitle">(amino acids, lipids, sugars)</div></div></div><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Chemical Gradients</div><div class="flow-node-subtitle">(H₂, CH₄, H₂S, CO₂)</div></div></div></div><div class="connector-line"></div><div class="flow-node rounded-3xl"><div class="flow-node-title">Protocells</div></div><div class="connector-line"></div><div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Life</div></div><div class="connector-line"></div><div class="branch-container"><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Methanogens</div></div></div><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Sulfur Oxidizers</div></div></div><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Hydrogen Users</div></div></div></div><div class="connector-line"></div><div class="flow-node rounded-3xl"><div class="flow-node-title">Microbial Mats</div></div><div class="connector-line"></div><div class="branch-container"><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Simple Multicellular Life</div></div></div><div class="branch-node"><div class="flow-node rounded-3xl"><div class="flow-node-title">Filter Feeders & Grazers</div></div></div></div><div class="connector-line"></div><div class="flow-node rounded-3xl"><div class="flow-node-title">Predators / Scavengers</div></div><div class="connector-line"></div><div class="flow-node rounded-3xl"><div class="flow-node-title">Fully Developed Ecosystem</div></div>
                     </div>
                 </div>
 
@@ -356,18 +275,14 @@
         </section>
 
         <!-- The Simulation Section -->
-        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
             <p class="mb-8 max-w-3xl mx-auto">
                 Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
             </p>
-            <!-- Clickable link to open simulation in a new tab -->
             <a href="sim3.html" target="_blank" rel="noopener noreferrer" class="block relative w-full aspect-video rounded-3xl shadow-lg overflow-hidden border-2 border-gray-700 group cursor-pointer">
-                <!-- Background image for the preview -->
                 <div class="absolute inset-0 bg-gray-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-105" style="background-image: url('Poseidon.jpg'); background-size: cover; background-position: center;">
-                     <!-- Overlay to darken the image and improve text readability -->
                     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-                    <!-- Text and Icon -->
                     <div class="relative z-10 text-center text-white p-4">
                         <svg class="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                         <h3 class="text-2xl font-bold">Launch Simulation</h3>
@@ -378,7 +293,7 @@
         </section>
 
         <!-- About Us Section -->
-        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
+        <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10 fade-in">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-md leading-relaxed mb-4">
@@ -405,7 +320,6 @@
         // JavaScript for mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
@@ -420,14 +334,32 @@
                 star.style.top = Math.random() * 100 + 'vh';
                 star.style.animationDelay = Math.random() * animationDuration + 's';
                 star.style.animationDuration = animationDuration + Math.random() * 30 + 's';
-                star.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`; // Add random initial rotation
+                star.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
                 container.appendChild(star);
             }
         }
-
         generateStars('stars', 200, 'small', 100);
         generateStars('stars2', 50, 'medium', 60);
         generateStars('stars3', 20, 'large', 30);
+
+        // ====== NEW: SMOOTH TRANSITION SCRIPT ======
+        document.addEventListener('DOMContentLoaded', () => {
+            const faders = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+            faders.forEach(fader => {
+                observer.observe(fader);
+            });
+        });
+        // ===========================================
     </script>
 </body>
 </html>

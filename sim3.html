@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemosynthetic Ocean World Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto Mono', monospace;
+        }
+        #simulation-canvas {
+            display: block;
+        }
+        #overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 300px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+        p {
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        #controls-info {
+            margin-top: 10px;
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+        #command-container {
+            margin-top: 15px;
+        }
+        #command-input {
+            background-color: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 5px;
+            width: 100px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        #scanner-ui {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background-color: rgba(0, 20, 40, 0.7);
+            border: 1px solid rgba(100, 200, 255, 0.5);
+            border-radius: 10px;
+            width: 250px;
+            display: none;
+            font-size: 0.8em;
+            pointer-events: none;
+        }
+        #scanner-ui h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #88ddff;
+        }
+        #scanner-ui p {
+            margin: 5px 0;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="overlay">
+        <h1>World Simulation</h1>
+        <p>A hypothetical world where life is sustained by chemosynthesis. Pan with the left mouse button, zoom with the scroll wheel, and move the torchlight with your cursor.</p>
+        <p id="controls-info">Press 'Z' to inspect a microbe, 'X' to zoom out. Click screen to start audio. Use Up/Down Arrows to adjust torch intensity.</p>
+        <div id="command-container">
+            <label for="command-input">Command:</label>
+            <input type="text" id="command-input" placeholder="0 or 1">
+            <p style="font-size: 0.7em; opacity: 0.6; margin-top: 5px;">(1: Collapse, 0: Restore)</p>
+        </div>
+    </div>
+    
+    <div id="scanner-ui">
+        <h2>Specimen Analysis</h2>
+        <p id="scan-type"><strong>Type:</strong> <span></span></p>
+        <p id="scan-energy"><strong>Energy Source:</strong> <span></span></p>
+        <p id="scan-mobility"><strong>Mobility:</strong> <span></span></p>
+    </div>
+
+    <canvas id="simulation-canvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/BufferGeometryUtils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/BokehShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BokehPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/objects/Lensflare.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+
+    <script>
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x01040a, 0.03);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(20, 12, 20);
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('simulation-canvas'),
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // --- POST-PROCESSING SETUP ---
+        const composer = new THREE.EffectComposer(renderer);
+        const renderPass = new THREE.RenderPass(scene, camera);
+        composer.addPass(renderPass);
+
+        const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 0.4;
+        bloomPass.radius = 0.5;
+        composer.addPass(bloomPass);
+
+        const bokehPass = new THREE.BokehPass(scene, camera, {
+            focus: 1.0,
+            aperture: 0.025,
+            maxblur: 0.01,
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+        bokehPass.enabled = false;
+        composer.addPass(bokehPass);
+
+
+        // --- CONTROLS ---
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 + 0.4;
+        controls.minDistance = 5;
+        controls.maxDistance = 50;
+
+        // --- LIGHTING ---
+        const ambientLight = new THREE.AmbientLight(0x102040, 0.5);
+        scene.add(ambientLight);
+
+        const torchLight = new THREE.SpotLight(0xffffff, 3.5, 100, Math.PI / 8, 0.8);
+        torchLight.castShadow = true;
+        scene.add(torchLight);
+        scene.add(torchLight.target);
+
+        // --- AUDIO MODIFICATION ---
+        let audioStarted = false;
+        
+        // Removed old audio and added a new, subtle noise
+        const deepWaterNoise = new Tone.Noise("brown").toDestination();
+        deepWaterNoise.volume.value = -30; // Very low volume
+        deepWaterNoise.start();
+
+        const eruptionSound = new Tone.NoiseSynth({ noise: { type: 'white' }, envelope: { attack: 0.1, decay: 0.5, sustain: 0 } }).toDestination();
+        eruptionSound.volume.value = -20; // Reduced volume
+
+        window.addEventListener('click', () => {
+            if (!audioStarted) {
+                Tone.start();
+                audioStarted = true;
+                document.getElementById('controls-info').textContent = "Press 'Z' to inspect a microbe, 'X' to zoom out. Use Up/Down Arrows to adjust torch intensity.";
+            }
+        });
+
+        // Mouse tracking for torchlight and interaction
+        const mouse = new THREE.Vector2();
+        const raycaster = new THREE.Raycaster();
+        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+        const pointOfIntersection = new THREE.Vector3();
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(plane, pointOfIntersection);
+            torchLight.target.position.copy(pointOfIntersection);
+        });
+        
+        // --- GEOMETRY & MATERIALS ---
+        const simplex = new SimplexNoise();
+
+        function createRockColorMap() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const context = canvas.getContext('2d');
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            const color1 = new THREE.Color(0x1a1d24);
+            const color2 = new THREE.Color(0x2a2d34);
+            for (let x = 0; x < canvas.width; x++) {
+                for (let y = 0; y < canvas.height; y++) {
+                    const value = (simplex.noise2D(x / 64, y / 64) + 1) * 0.5;
+                    const finalColor = color1.clone().lerp(color2, value);
+                    const index = (y * canvas.width + x) * 4;
+                    data[index] = finalColor.r * 255;
+                    data[index + 1] = finalColor.g * 255;
+                    data[index + 2] = finalColor.b * 255;
+                    data[index + 3] = 255;
+                }
+            }
+            context.putImageData(imageData, 0, 0);
+            return new THREE.CanvasTexture(canvas);
+        }
+        
+        function createRockBumpMap() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const context = canvas.getContext('2d');
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            for (let x = 0; x < canvas.width; x++) {
+                for (let y = 0; y < canvas.height; y++) {
+                    const value = (simplex.noise2D(x / 32, y / 32) + 1) * 0.5;
+                    const color = value * 255;
+                    const index = (y * canvas.width + x) * 4;
+                    data[index] = color; data[index + 1] = color; data[index + 2] = color; data[index + 3] = 255;
+                }
+            }
+            context.putImageData(imageData, 0, 0);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const rockColorMap = createRockColorMap();
+        const rockBumpMap = createRockBumpMap();
+        rockBumpMap.wrapS = THREE.RepeatWrapping;
+        rockBumpMap.wrapT = THREE.RepeatWrapping;
+
+        const rockMaterial = new THREE.MeshStandardMaterial({ map: rockColorMap, roughness: 0.8, metalness: 0.2, bumpMap: rockBumpMap, bumpScale: 0.5 });
+        const boneMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.9 });
+
+        // Seafloor
+        const floorGeometry = new THREE.PlaneGeometry(500, 500, 200, 200);
+        const floorVertices = floorGeometry.attributes.position;
+        for (let i = 0; i < floorVertices.count; i++) {
+            const x = floorVertices.getX(i);
+            const y = floorVertices.getY(i);
+            const largeFeatures = simplex.noise2D(x * 0.01, y * 0.01) * 10;
+            const mediumFeatures = simplex.noise2D(x * 0.05, y * 0.05) * 3;
+            const smallFeatures = simplex.noise2D(x * 0.2, y * 0.2) * 0.8;
+            floorVertices.setZ(i, largeFeatures + mediumFeatures + smallFeatures);
+        }
+        floorGeometry.computeVertexNormals();
+        const floor = new THREE.Mesh(floorGeometry, rockMaterial);
+        floor.receiveShadow = true;
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
+
+        const wallGeometry = new THREE.CylinderGeometry(250, 250, 50, 64, 50, true);
+        const wallVertices = wallGeometry.attributes.position;
+        for (let i = 0; i < wallVertices.count; i++) {
+            const x = wallVertices.getX(i);
+            const y = wallVertices.getY(i);
+            const z = wallVertices.getZ(i);
+            const noise = simplex.noise3D(x * 0.01, y * 0.01, z * 0.01) * 20;
+            const radialNoise = Math.sqrt(x*x + z*z) + noise;
+            wallVertices.setX(i, x / Math.sqrt(x*x + z*z) * radialNoise);
+            wallVertices.setZ(i, z / Math.sqrt(x*x + z*z) * radialNoise);
+        }
+        wallGeometry.computeVertexNormals();
+        const walls = new THREE.Mesh(wallGeometry, rockMaterial);
+        walls.position.y = 10;
+        walls.receiveShadow = true;
+        scene.add(walls);
+
+        function scatterLargeRocks() {
+            for (let i = 0; i < 40; i++) {
+                const radius = Math.random() * 2.5 + 1.5;
+                const rockGeom = new THREE.IcosahedronGeometry(radius, 1);
+                const rockVertices = rockGeom.attributes.position;
+                for (let j = 0; j < rockVertices.count; j++) {
+                    const noise = 1 + simplex.noise3D(rockVertices.getX(j), rockVertices.getY(j), rockVertices.getZ(j)) * 0.5;
+                    rockVertices.setX(j, rockVertices.getX(j) * noise);
+                    rockVertices.setY(j, rockVertices.getY(j) * noise);
+                    rockVertices.setZ(j, rockVertices.getZ(j) * noise);
+                }
+                rockGeom.computeVertexNormals();
+                const rock = new THREE.Mesh(rockGeom, rockMaterial);
+                rock.castShadow = true; rock.receiveShadow = true;
+                const posX = (Math.random() - 0.5) * 90;
+                const posZ = (Math.random() - 0.5) * 90;
+                const floorNoise = simplex.noise2D(posX * 0.05, posZ * 0.05) * 3 + simplex.noise2D(posX * 0.2, posZ * 0.2) * 0.8;
+                rock.position.set(posX, floorNoise - 1, posZ);
+                scene.add(rock);
+            }
+        }
+
+        function scatterSkeletalRemains() {
+            const boneGeom = new THREE.CylinderGeometry(0.1, 0.1, 2, 8);
+            for(let i = 0; i < 20; i++) {
+                const bone = new THREE.Mesh(boneGeom, boneMaterial);
+                const posX = (Math.random() - 0.5) * 80;
+                const posZ = (Math.random() - 0.5) * 80;
+                const floorNoise = simplex.noise2D(posX * 0.05, posZ * 0.05) * 3 + simplex.noise2D(posX * 0.2, posZ * 0.2) * 0.8;
+                bone.position.set(posX, floorNoise + 0.2, posZ);
+                bone.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+                scene.add(bone);
+            }
+        }
+
+        // Hydrothermal Vents
+        function createVent(x, z, height, radius) {
+            const geometries = [];
+            const mainVentGeom = new THREE.CylinderGeometry(radius * 0.3, radius, height, 32, 50);
+            geometries.push(mainVentGeom);
+            const numSubVents = 3;
+            for(let i = 0; i < numSubVents; i++) {
+                const subHeight = height * (Math.random() * 0.4 + 0.3);
+                const subRadius = radius * (Math.random() * 0.2 + 0.2);
+                const subVentGeom = new THREE.CylinderGeometry(subRadius * 0.2, subRadius, subHeight, 16, 20);
+                const angle = Math.random() * Math.PI * 2;
+                const distFromCenter = radius * 0.6;
+                subVentGeom.rotateX(Math.random() * 0.5 - 0.25);
+                subVentGeom.rotateZ(Math.random() * 0.5 - 0.25);
+                subVentGeom.translate(Math.cos(angle) * distFromCenter, subHeight / 2 - height / 2, Math.sin(angle) * distFromCenter);
+                geometries.push(subVentGeom);
+            }
+            const ventGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
+            const ventVertices = ventGeometry.attributes.position;
+            for (let i = 0; i < ventVertices.count; i++) {
+                const y = ventVertices.getY(i);
+                const noise = simplex.noise3D(ventVertices.getX(i) * 1.5, y * 0.2, ventVertices.getZ(i) * 1.5) * (y / height + 0.5) * 1.5;
+                ventVertices.setX(i, ventVertices.getX(i) + noise);
+                ventVertices.setZ(i, ventVertices.getZ(i) + noise);
+            }
+            ventGeometry.computeVertexNormals();
+            const vent = new THREE.Mesh(ventGeometry, rockMaterial);
+            vent.castShadow = true; vent.receiveShadow = true;
+            vent.position.set(x, height / 2 - 1, z);
+            scene.add(vent);
+            const ventLight = new THREE.PointLight(0x88ccff, 2, 20);
+            ventLight.position.set(x, height - 1.5, z);
+            scene.add(ventLight);
+            return { mesh: vent, topY: height - 1, radius: radius, light: ventLight };
+        }
+
+        const vents = [ createVent(0, 0, 10, 6), createVent(-12, 8, 6, 2), createVent(10, -10, 7, 2.5) ];
+        
+        function createSessileLife(vent, radius) {
+            const clamGeom = new THREE.SphereGeometry(0.2, 8, 6, 0, Math.PI);
+            const clamMat = new THREE.MeshStandardMaterial({color: 0x99aaff, roughness: 0.6});
+            for(let i = 0; i < 30; i++) {
+                const clam = new THREE.Mesh(clamGeom, clamMat);
+                const angle = Math.random() * Math.PI * 2;
+                const dist = radius * (0.8 + Math.random() * 0.4);
+                const posX = vent.position.x + Math.cos(angle) * dist;
+                const posZ = vent.position.z + Math.sin(angle) * dist;
+                const floorNoise = simplex.noise2D(posX * 0.05, posZ * 0.05) * 3 + simplex.noise2D(posX * 0.2, posZ * 0.2) * 0.8;
+                clam.position.set(posX, floorNoise, posZ);
+                clam.rotation.y = Math.random() * Math.PI * 2;
+                scene.add(clam);
+            }
+        }
+
+        // --- PARTICLE SYSTEMS ---
+        function createCircularTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64; canvas.height = 64;
+            const context = canvas.getContext('2d');
+            const gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.2, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const particles = [];
+        const microbeParticles = [];
+        const smokeParticles = [];
+        const smokeParticleCount = 4000;
+        const bubbleParticleCount = 500;
+        const microbeParticleCount = 400;
+        
+        const particleTexture = createCircularTexture();
+        
+        const microbeMaterial = new THREE.MeshStandardMaterial({ color: 0x88ffcc, emissive: 0x88ffcc, emissiveIntensity: 0.5, transparent: true, opacity: 0.8 });
+
+        function createHairyMicrobe() {
+            const group = new THREE.Group();
+            const body = new THREE.Mesh(new THREE.IcosahedronGeometry(0.15, 1), microbeMaterial);
+            group.add(body);
+            const hairGeom = new THREE.CylinderGeometry(0.01, 0.01, 0.1, 4);
+            const bodyVertices = body.geometry.attributes.position;
+            for (let i = 0; i < bodyVertices.count; i++) {
+                const hair = new THREE.Mesh(hairGeom, microbeMaterial);
+                const pos = new THREE.Vector3().fromBufferAttribute(bodyVertices, i);
+                hair.position.copy(pos).multiplyScalar(1.1);
+                hair.lookAt(pos.clone().multiplyScalar(2));
+                group.add(hair);
+            }
+            return group;
+        }
+
+        const microbeGeometries = [ new THREE.IcosahedronGeometry(0.15, 0), new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8) ];
+
+        const smokeMaterial = new THREE.SpriteMaterial({ map: particleTexture, color: 0x4d382c, opacity: 0.6, transparent: true, blending: THREE.NormalBlending });
+        const bubbleMaterial = new THREE.SpriteMaterial({ map: particleTexture, color: 0xaaaaee, opacity: 0.5, transparent: true, blending: THREE.AdditiveBlending });
+        const blackSmokeMaterial = new THREE.SpriteMaterial({ map: particleTexture, color: 0x000000, opacity: 0.8, transparent: true, blending: THREE.NormalBlending });
+        
+        vents.forEach(ventData => {
+            createSessileLife(ventData.mesh, ventData.radius);
+            for (let i = 0; i < smokeParticleCount / vents.length; i++) {
+                const particle = new THREE.Sprite(smokeMaterial);
+                const radius = Math.random() * 0.8; const angle = Math.random() * Math.PI * 2;
+                particle.position.set(ventData.mesh.position.x + Math.cos(angle) * radius, ventData.topY, ventData.mesh.position.z + Math.sin(angle) * radius);
+                particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.02, Math.random() * 0.03 + 0.02, (Math.random() - 0.5) * 0.02);
+                particle.initialVelocity = particle.velocity.clone();
+                particle.lifespan = Math.random() * 8 + 4; particle.initialPos = particle.position.clone();
+                scene.add(particle); particles.push(particle); smokeParticles.push(particle);
+            }
+            for (let i = 0; i < bubbleParticleCount / vents.length; i++) {
+                const particle = new THREE.Sprite(bubbleMaterial);
+                const radius = Math.random() * 0.8; const angle = Math.random() * Math.PI * 2;
+                particle.position.set(ventData.mesh.position.x + Math.cos(angle) * radius, ventData.topY, ventData.mesh.position.z + Math.sin(angle) * radius);
+                particle.velocity = new THREE.Vector3(0, Math.random() * 0.08 + 0.05, 0);
+                particle.lifespan = Math.random() * 15 + 8; particle.initialPos = particle.position.clone();
+                particle.swaySpeed = Math.random() * 2 + 1; particle.swayAmount = Math.random() * 0.02 + 0.01;
+                scene.add(particle); particles.push(particle);
+            }
+        });
+
+        for (let i = 0; i < microbeParticleCount; i++) {
+            let particle;
+            const microbeType = Math.floor(Math.random() * 3);
+
+            if (microbeType === 2) {
+                particle = createHairyMicrobe();
+            } else {
+                const randomGeometry = microbeGeometries[microbeType];
+                particle = new THREE.Mesh(randomGeometry, microbeMaterial);
+            }
+            
+            particle.position.set((Math.random() - 0.5) * 50, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 50);
+            particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01);
+            particle.lifespan = Infinity;
+            particle.isMicrobe = true; particle.visible = false;
+            particle.pulseOffset = Math.random() * Math.PI * 2;
+            particle.userData.type = ["Lithotroph", "Organotroph", "Autotroph"][microbeType];
+            particle.userData.energy = ["Sulfide Oxidation", "Methane Synthesis", "Iron Respiration"][microbeType];
+            particle.userData.mobility = ["Flagellar", "Ciliate", "Amoeboid"][microbeType];
+            scene.add(particle); particles.push(particle); microbeParticles.push(particle);
+        }
+
+        let isZoomedIn = false;
+        let zoomTarget = null;
+        let preZoomState = { pos: new THREE.Vector3(), target: new THREE.Vector3() };
+        const scannerUI = document.getElementById('scanner-ui');
+        let simulationState = 'running';
+
+        function triggerMiniEruption(ventData) {
+            if (audioStarted) eruptionSound.triggerAttackRelease("4n");
+            for (let i = 0; i < 200; i++) {
+                const particle = new THREE.Sprite(blackSmokeMaterial);
+                const radius = Math.random() * 0.8;
+                const angle = Math.random() * Math.PI * 2;
+                particle.position.set(ventData.mesh.position.x + Math.cos(angle) * radius, ventData.topY, ventData.mesh.position.z + Math.sin(angle) * radius);
+                particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.05, Math.random() * 0.1 + 0.05, (Math.random() - 0.5) * 0.05);
+                particle.initialVelocity = particle.velocity.clone();
+                particle.lifespan = Math.random() * 4 + 2;
+                particle.initialPos = particle.position.clone();
+                scene.add(particle);
+                particles.push(particle);
+                smokeParticles.push(particle);
+            }
+        }
+
+        window.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(vents.map(v => v.mesh));
+            if (intersects.length > 0) {
+                const clickedVentObject = intersects[0].object;
+                const ventData = vents.find(v => v.mesh === clickedVentObject);
+                if (ventData) {
+                    triggerMiniEruption(ventData);
+                }
+            }
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'z' && !isZoomedIn) {
+                let closestMicrobe = null;
+                let minDistance = Infinity;
+                microbeParticles.forEach(p => {
+                    if (p.visible) {
+                        const distance = torchLight.target.position.distanceTo(p.position);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestMicrobe = p;
+                        }
+                    }
+                });
+                if (closestMicrobe) {
+                    isZoomedIn = true;
+                    zoomTarget = closestMicrobe;
+                    controls.enabled = false;
+                    preZoomState.pos.copy(camera.position);
+                    preZoomState.target.copy(controls.target);
+                    document.querySelector('#scan-type span').textContent = zoomTarget.userData.type;
+                    document.querySelector('#scan-energy span').textContent = zoomTarget.userData.energy;
+                    document.querySelector('#scan-mobility span').textContent = zoomTarget.userData.mobility;
+                    scannerUI.style.display = 'block';
+                }
+            } else if (event.key.toLowerCase() === 'x' && isZoomedIn) {
+                isZoomedIn = false;
+                scannerUI.style.display = 'none';
+            } else if (event.key === 'ArrowUp') {
+                torchLight.intensity = Math.min(torchLight.intensity + 0.5, 10);
+            } else if (event.key === 'ArrowDown') {
+                torchLight.intensity = Math.max(torchLight.intensity - 0.5, 0);
+            }
+        });
+
+        const commandInput = document.getElementById('command-input');
+        commandInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const command = commandInput.value;
+                if (command === '1') {
+                    simulationState = 'collapsing';
+                    microbeParticles.forEach(p => {
+                        p.dyingLifespan = 5;
+                        p.visible = true;
+                    });
+                } else if (command === '0') {
+                    simulationState = 'restoring';
+                    microbeParticles.forEach(p => {
+                        p.revivingTime = 5; // Start a 5-second reviving timer
+                        p.position.set((Math.random() - 0.5) * 50, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 50);
+                    });
+                }
+                commandInput.value = '';
+            }
+        });
+
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+        const lightWorldPosition = new THREE.Vector3();
+        const lightDirection = new THREE.Vector3();
+        const particleDirection = new THREE.Vector3();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+            
+            if (!isZoomedIn) {
+                controls.update();
+            }
+
+            torchLight.getWorldPosition(lightWorldPosition);
+            lightDirection.subVectors(torchLight.target.position, lightWorldPosition).normalize();
+            const cosAngle = Math.cos(torchLight.angle);
+
+            if (simulationState === 'collapsing') {
+                vents.forEach(v => v.light.intensity -= 0.05);
+                smokeParticles.forEach(p => p.lifespan -= delta * 5);
+            } else if (simulationState === 'restoring') {
+                vents.forEach(v => v.light.intensity = Math.min(2, v.light.intensity + 0.05));
+                if(vents[0].light.intensity >= 2) simulationState = 'running';
+            }
+
+            if (isZoomedIn) {
+                const targetPos = zoomTarget.position.clone().add(new THREE.Vector3(1, 1, 1));
+                targetPos.y = Math.max(targetPos.y, 0.5);
+                camera.position.lerp(targetPos, 0.05);
+                const lookAtTarget = zoomTarget.position.clone();
+                lookAtTarget.y = Math.max(lookAtTarget.y, 0.0);
+                camera.lookAt(lookAtTarget);
+                const pulse = (Math.sin(time * 5) + 1) / 2;
+                
+                if (zoomTarget.isMesh) {
+                    zoomTarget.material.emissiveIntensity = 0.5 + pulse * 0.5;
+                } else {
+                    zoomTarget.children.forEach(child => {
+                        if(child.isMesh) child.material.emissiveIntensity = 0.5 + pulse * 0.5;
+                    });
+                }
+            } else if (zoomTarget) {
+                camera.position.lerp(preZoomState.pos, 0.05);
+                controls.target.lerp(preZoomState.target, 0.05);
+                if (zoomTarget.isMesh) {
+                    zoomTarget.material.emissiveIntensity = 0.5;
+                } else {
+                     zoomTarget.children.forEach(child => {
+                        if(child.isMesh) child.material.emissiveIntensity = 0.5;
+                    });
+                }
+                if (camera.position.distanceTo(preZoomState.pos) < 0.1) {
+                    zoomTarget = null;
+                    controls.enabled = true;
+                }
+            }
+
+            particles.forEach(p => {
+                if (p.isMicrobe) {
+                    p.position.addScaledVector(p.velocity, delta * 60);
+                    p.rotation.x += delta * 0.1;
+                    p.rotation.y += delta * 0.1;
+                    
+                    if (simulationState === 'running') {
+                        const baseScale = p.isGroup ? 1.0 : 0.2;
+                        const pulse = (Math.sin(time * 3 + p.pulseOffset) + 1) / 2;
+                        p.scale.setScalar(baseScale * (0.9 + pulse * 0.2));
+                        if (p.position.y < -5) p.position.y = 15;
+                        particleDirection.subVectors(p.position, lightWorldPosition).normalize();
+                        const dotProduct = lightDirection.dot(particleDirection);
+                        const distance = p.position.distanceTo(lightWorldPosition);
+                        p.visible = (dotProduct > cosAngle && distance < torchLight.distance);
+                    } else if (simulationState === 'collapsing') {
+                        p.dyingLifespan -= delta;
+                        const dyingFactor = Math.max(0, p.dyingLifespan / 5);
+                        const baseScale = p.isGroup ? 1.0 : 0.2;
+                        p.scale.setScalar(baseScale * dyingFactor);
+                        if(p.isMesh) p.material.opacity = 0.8 * dyingFactor;
+                        if (p.dyingLifespan <= 0) p.visible = false;
+                    } else if (simulationState === 'restoring') {
+                        if(p.revivingTime > 0) {
+                            p.revivingTime -= delta;
+                            const revivingFactor = Math.max(0, (5 - p.revivingTime) / 5);
+                            const baseScale = p.isGroup ? 1.0 : 0.2;
+                            p.scale.setScalar(baseScale * revivingFactor);
+                            if(p.isMesh) p.material.opacity = 0.8 * revivingFactor;
+                            p.visible = true;
+                        } else {
+                            // Once reviving is complete, microbes follow the regular logic
+                            const baseScale = p.isGroup ? 1.0 : 0.2;
+                            const pulse = (Math.sin(time * 3 + p.pulseOffset) + 1) / 2;
+                            p.scale.setScalar(baseScale * (0.9 + pulse * 0.2));
+                            if (p.position.y < -5) p.position.y = 15;
+                            particleDirection.subVectors(p.position, lightWorldPosition).normalize();
+                            const dotProduct = lightDirection.dot(particleDirection);
+                            const distance = p.position.distanceTo(lightWorldPosition);
+                            p.visible = (dotProduct > cosAngle && distance < torchLight.distance);
+                        }
+                    }
+
+                    if (isZoomedIn && p !== zoomTarget) {
+                        p.visible = false;
+                    }
+
+                } else {
+                    if(p.material.color.getHexString() === '4d382c' || p.material.color.getHexString() === '000000') { 
+                        p.velocity.lerp(p.initialVelocity, 0.01);
+                    }
+                    p.position.addScaledVector(p.velocity, delta * 60);
+                    p.lifespan -= delta;
+                    if (p.swaySpeed) { p.position.x = p.initialPos.x + Math.sin(p.position.y * p.swaySpeed) * p.swayAmount; }
+                    const scale = Math.max(0, p.lifespan / 10);
+                    p.scale.set(scale, scale, scale);
+                    if (p.lifespan <= 0 && simulationState !== 'collapsing') { 
+                        p.position.copy(p.initialPos); 
+                        p.lifespan = Math.random() * 10 + 5; 
+                    }
+                }
+            });
+            
+            torchLight.position.copy(camera.position);
+
+            composer.render();
+        }
+        
+        // --- MAIN EXECUTION ---
+        scatterLargeRocks();
+        scatterSkeletalRemains();
+
+        // --- RESIZE HANDLER ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

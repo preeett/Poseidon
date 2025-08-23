@@ -67,7 +67,7 @@
             }
         }
         /*
-         * Starfield Animation (3D Effect)
+         * Microbe Animation (formerly Starfield)
          */
         @keyframes moveStar {
             from { transform: translateY(0) rotate(0deg); }
@@ -85,14 +85,19 @@
             transform-style: preserve-3d;
             perspective: 600px;
         }
+        /* ====== NEW MICROBE STYLING ====== */
         .star {
             position: absolute;
-            background-color: #ffffff;
-            border-radius: 50%;
+            background-color: #7fffd4; /* Aqua-green bioluminescent color */
+            /* This complex border-radius creates an organic, blob-like shape */
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            box-shadow: 0 0 5px #7fffd4, 0 0 10px #7fffd4; /* Adds a soft glow */
+            opacity: 0.7;
         }
-        .star.small { width: 1px; height: 1px; animation: moveStar 100s linear infinite; }
-        .star.medium { width: 2px; height: 2px; animation: moveStar 60s linear infinite; }
-        .star.large { width: 3px; height: 3px; animation: moveStar 30s linear infinite; }
+        /* ================================= */
+        .star.small { width: 4px; height: 4px; animation: moveStar 100s linear infinite; }
+        .star.medium { width: 6px; height: 6px; animation: moveStar 60s linear infinite; }
+        .star.large { width: 8px; height: 8px; animation: moveStar 30s linear infinite; }
         
         /* Flowchart Styles */
         .flowchart-container { max-width: 800px; margin: auto; display: flex; flex-direction: column; align-items: center; }
@@ -107,7 +112,7 @@
         /* Media Filter */
         .media-filter { filter: brightness(0.9) contrast(0.9); border: 2px solid #1e293b; }
 
-        /* ====== NEW: SMOOTH TRANSITION STYLES ====== */
+        /* Smooth Transition Styles */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -117,12 +122,11 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* ========================================= */
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Starfield Animation Container -->
+    <!-- Microbe Animation Container -->
     <div id="stars" class="stars"></div>
     <div id="stars2" class="stars"></div>
     <div id="stars3" class="stars"></div>
@@ -182,7 +186,7 @@
                         Chemosynthesis is the process by which certain organisms produce food (organic compounds) using energy from chemical reactions, instead of sunlight. Seawater seeps down through cracks on the ocean floor, gets superheated by magma below, reacts with hot rocks (dissolving minerals and gases), and then gushes back out as hydrothermal vent fluid.
                     </p>
                     <p class="text-md leading-relaxed">
-                        Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide (H2S), methane (CH4), and dissolved iron (Fe^2+). These serve as the fundamental energy sources for all life on the planet.
+                        Hydrothermal vents and cold seeps are the "cities" of Poseidon, releasing a rich cocktail of chemical compounds like hydrogen sulfide ($H_2S$), methane ($CH_4$), and dissolved iron ($Fe^{2+}$). These serve as the fundamental energy sources for all life on the planet.
                     </p>
                 </div>
             </div>
@@ -297,7 +301,7 @@
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-md leading-relaxed mb-4">
-                    This project was created for the NASA Space Apps Hackathon. We are a team of three. Our goal was to push the boundaries of astrobiology and planetary science by envisioning life beyond Earth's traditional parameters.
+                    This project was created for the NASA Space Apps Hackathon. We are a team of two: a concept designer/web developer (your role) and a 3D simulation artist (your friend's role). Our goal was to push the boundaries of astrobiology and planetary science by envisioning life beyond Earth's traditional parameters.
                 </p>
                 <p class="text-md leading-relaxed font-bold">
                     Problem Statement: Beyond Sunlight: An Aquatic Chemosynthetic World.
@@ -305,10 +309,6 @@
                 <p class="text-sm mt-4">
                     You can find more details about our project on our GitHub repository.
                 </p>
-                <p>
-                    Presented to you by: Quantum Quasers- Nischall, Preetam & Vinu
-                </p>
-               
             </div>
         </section>
     </main>
@@ -367,7 +367,3 @@
     </script>
 </body>
 </html>
-
-
-
-

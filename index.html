@@ -190,7 +190,6 @@
             filter: brightness(0.9) contrast(0.9);
             border: 2px solid #1e293b;
         }
-        /* REMOVED: Reveal transition styles */
     </style>
 </head>
 <body class="antialiased">
@@ -540,6 +539,11 @@
     </footer>
 
     <script>
+        // NEW: Scroll to the top on page load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+
         // JavaScript for mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');

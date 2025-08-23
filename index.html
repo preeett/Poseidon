@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poseidon: An Aquatic Chemosynthetic World</title>
+    <!-- Load Tailwind CSS for modern, responsive styling. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,14 +190,17 @@
             filter: brightness(0.9) contrast(0.9);
             border: 2px solid #1e293b;
         }
+        /* REMOVED: Reveal transition styles */
     </style>
 </head>
 <body class="antialiased">
 
+    <!-- Starfield Animation Container (replaces the old one) -->
     <div id="stars" class="stars"></div>
     <div id="stars2" class="stars"></div>
     <div id="stars3" class="stars"></div>
 
+    <!-- Navigation Bar -->
     <nav class="fixed w-full top-0 z-50 bg-gray-900 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-b-3xl">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold text-white nav-link">Poseidon</a>
@@ -206,6 +210,7 @@
                 <a href="#simulation" class="nav-link">Simulation</a>
                 <a href="#about" class="nav-link">About Us</a>
             </div>
+            <!-- Mobile Menu Button -->
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-white focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -214,6 +219,7 @@
                 </button>
             </div>
         </div>
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-90 backdrop-blur-sm rounded-b-3xl">
             <a href="#world" class="block py-2 px-6 nav-link">The World</a>
             <a href="#biosphere" class="block py-2 px-6 nav-link">The Biosphere</a>
@@ -222,6 +228,7 @@
         </div>
     </nav>
 
+    <!-- Home Section (Hero) -->
     <header id="home" class="relative bg-hero h-screen flex items-center justify-center text-center text-white">
         <div class="bg-hero-container"></div>
         <div class="bg-black bg-opacity-50 p-10 rounded-3xl shadow-lg relative">
@@ -236,10 +243,12 @@
     </header>
 
     <main class="container mx-auto">
+        <!-- The World of Poseidon Section -->
         <section id="world" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The process of Chemosynthesis</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
+                    <!-- Replaced image with video -->
                     <video class="rounded-3xl shadow-lg w-full media-filter" autoplay loop muted playsinline>
                         <source src="Hydrothermal vent.mp4" type="video/mp4">
                         Your browser does not support the video tag.
@@ -256,6 +265,7 @@
                 </div>
             </div>
             
+            <!-- NEW SECTION: Formation of Energy/Heat -->
             <div class="grid md:grid-cols-2 gap-12 items-center mt-12">
                 <div>
                     <h3 class="text-3xl font-bold mb-4">Formation of Heat/Energy</h3>
@@ -272,9 +282,11 @@
             </div>
         </section>
 
+        <!-- The Biosphere Section -->
         <section id="biosphere" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">The Biosphere</h2>
             <div class="grid gap-12">
+                <!-- Siphonophore Drifters -->
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div class="md:w-1/2">
                         <h3 class="text-3xl font-bold mb-4">Ideal Chemosynthetic Planet</h3>
@@ -285,7 +297,7 @@
                             The atmosphere is well balanced with a surface pressure of 2-3 bar, mostly composed of nitrogen and carbon dioxide, with traces of methane and sulfur gases. It protects the oceans from harmful radiation and keeps the chemical ingredients dissolved, ready for microbes to use. Sunlight barely reaches the surface, but life doesn’t need it.
                         </p>
                         <p class="text-md leading-relaxed">
-                            Near the vents, microbes thrive, using the chemicals to build organic matter. These microbial communities grow, spread across the oceans, and over time support more complex, multicellular life. On Poseidon, life doesn’t rely on the sun — it flourishes purely on the planet’s chemistry, proving that wherever energy, water, and minerals exist, life can find a way.                            
+                            Near the vents, microbes thrive, using the chemicals to build organic matter. These microbial communities grow, spread across the oceans, and over time support more complex, multicellular life. On Poseidon, life doesn’t rely on the sun — it flourishes purely on the planet’s chemistry, proving that wherever energy, water, and minerals exist, life can find a way.                           
                         </p>
                     </div>
                     <div class="md:w-1/2">
@@ -293,6 +305,7 @@
                     </div>
                 </div>
 
+                <!-- Evolution of Life -->
                 <div class="flex flex-col md:flex-row-reverse items-center gap-8">
                     <div class="md:w-1/2">
                         <h3 class="text-3xl font-bold mb-4">Evolution of Life <span class="text-lg text-gray-400">(Video)</span></h3>
@@ -301,6 +314,7 @@
                         </p>
                     </div>
                     <div class="md:w-1/2">
+                        <!-- Replaced image with video and removed controls -->
                         <video autoplay loop muted playsinline class="rounded-3xl shadow-lg w-full media-filter">
                             <source src="eol.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -308,18 +322,22 @@
                     </div>
                 </div>
 
+                <!-- NEW Flowchart Section -->
                 <div class="flex flex-col items-center gap-8">
                     <h3 class="text-3xl font-bold mb-4">Family Tree</h3>
                     <p class="text-md leading-relaxed mb-4 text-center max-w-2xl mx-auto">
                         The following flowchart visualizes the evolutionary path of life on Poseidon, from the initial chemical gradients to a fully-developed ecosystem.
                     </p>
                     <div class="flowchart-container">
+                        <!-- Hydrothermal Vents -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Hydrothermal Vents</div>
                         </div>
 
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Prebiotic Chemistry & Chemical Gradients -->
                         <div class="branch-container">
                             <div class="branch-node">
                                 <div class="flow-node rounded-3xl">
@@ -340,18 +358,23 @@
                         <div class="connector-line -mt-8"></div>
 
 
+                        <!-- Protocells -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Protocells</div>
                         </div>
 
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Microbial Life -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Microbial Life</div>
                         </div>
                         
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Microbial branches -->
                         <div class="branch-container">
                             <div class="branch-node">
                                 <div class="flow-node rounded-3xl">
@@ -370,14 +393,18 @@
                             </div>
                         </div>
 
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Microbial Mats -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Microbial Mats</div>
                         </div>
                         
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Simple Multicellular Life & Filter Feeders -->
                         <div class="branch-container">
                             <div class="branch-node">
                                 <div class="flow-node rounded-3xl">
@@ -391,62 +418,77 @@
                             </div>
                         </div>
                         
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Predators / Scavengers -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Predators / Scavengers</div>
                         </div>
 
+                        <!-- Connector line -->
                         <div class="connector-line"></div>
 
+                        <!-- Fully Developed Ecosystem -->
                         <div class="flow-node rounded-3xl">
                             <div class="flow-node-title">Fully Developed Ecosystem</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- NEW SECTION: What Ifs? -->
                 <div class="mt-12">
                     <h3 class="text-3xl font-bold mb-4 text-center">What Ifs?</h3>
                     <p class="text-md leading-relaxed mb-8 text-center max-w-2xl mx-auto">
                         As we envision Poseidon, we're left with many questions. These scenarios challenge us to consider how life could adapt and evolve under new, dramatic circumstances.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- What If #1: Hydrothermal vents stop or decrease -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Hydrothermal vents stop or decrease</h4>
                             <p class="text-sm leading-relaxed">Energy supply drops, causing microbial mats to shrink. Higher life struggles and the ecosystem collapses in vent regions.</p>
                         </div>
+                        <!-- What If #2: Ocean depth decreases significantly -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean depth decreases significantly</h4>
                             <p class="text-sm leading-relaxed">Reduced vent pressure leads to less chemical solubility and fewer habitats. Temperature may fluctuate more, causing microbial stress.</p>
                         </div>
+                        <!-- What If #3: Atmosphere becomes thinner (<1 bar) -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
-                            <h4 class="text-xl font-bold mb-2 text-blue-300">Atmosphere becomes thinner (&lt;1 bar)</h4>
+                            <h4 class="text-xl font-bold mb-2 text-blue-300">Atmosphere becomes thinner (<1 bar)</h4>
                             <p class="text-sm leading-relaxed">Less radiation protection and dissolved gases decrease. This makes surface microbes vulnerable and drops the chemical energy availability.</p>
                         </div>
+                        <!-- What If #4: CO₂ levels drop drastically -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">CO₂ levels drop drastically</h4>
                             <p class="text-sm leading-relaxed">Microbes can't fix carbon efficiently, leading to slower growth and less biomass for higher organisms.</p>
                         </div>
+                        <!-- What If #5: Ocean temperature rises too much (>320 K) -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
-                            <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean temperature rises too much (&gt;320 K)</h4>
+                            <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean temperature rises too much (>320 K)</h4>
                             <p class="text-sm leading-relaxed">Many microbes cannot survive. Chemical reactions may shift, leading to ecosystem collapse or requiring significant species adaptation.</p>
                         </div>
+                        <!-- What If #6: Excess volcanic activity -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Excess volcanic activity</h4>
                             <p class="text-sm leading-relaxed">Overproduction of toxic gases like H₂S and SO₂ causes a chemical imbalance, putting stress on microbial communities.</p>
                         </div>
+                        <!-- What If #7: Ocean currents weaken -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Ocean currents weaken</h4>
                             <p class="text-sm leading-relaxed">Slower dispersal of microbes leads to local extinctions and reduced genetic exchange and biodiversity.</p>
                         </div>
+                        <!-- What If #8: Methane (CH₄) availability decreases -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Methane (CH₄) availability decreases</h4>
                             <p class="text-sm leading-relaxed">Reduced chemical fuel for methanogens results in slower energy production and lower ecosystem productivity.</p>
                         </div>
+                        <!-- What If #9: Life spreads beyond vents -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">Life spreads beyond vents</h4>
                             <p class="text-sm leading-relaxed">Creates secondary habitats and a more diverse ecosystem, leading to higher stability and resilience.</p>
                         </div>
+                        <!-- What If #10: New chemical sources appear -->
                         <div class="bg-black/50 p-6 rounded-3xl shadow-lg transition-transform transform hover:scale-105">
                             <h4 class="text-xl font-bold mb-2 text-blue-300">New chemical sources appear</h4>
                             <p class="text-sm leading-relaxed">Introduces new niches, promoting species diversification and more complex ecosystem dynamics.</p>
@@ -456,22 +498,24 @@
             </div>
         </section>
 
+        <!-- The Simulation Section -->
         <section id="simulation" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">Witness Poseidon in Motion</h2>
             <p class="mb-8 max-w-3xl mx-auto">
                 Dive deeper into Poseidon's world with our interactive simulation. Explore the deep-sea vents, witness the bioluminescent Siphonophores, and watch the Lithovores graze on microbial mats. The simulation, created by my teammate, is a live, interactive experience of our concept.
             </p>
-            
-            <div class="relative w-full aspect-video rounded-3xl shadow-lg overflow-hidden border-2 border-gray-700">
-                <iframe 
-                    src="sim3.html" 
-                    class="absolute top-0 left-0 w-full h-full" 
-                    style="border:none;" 
-                    title="Poseidon Simulation">
-                </iframe>
+            <!-- Placeholder for your friend's simulation. -->
+            <!-- You will replace this with an iframe pointing to their simulation's URL. -->
+            <div class="relative w-full aspect-video rounded-3xl shadow-lg overflow-hidden">
+                <div class="absolute inset-0 bg-gray-800 flex items-center justify-center p-4">
+                    <p class="text-white text-lg font-mono">
+                        &lt;iframe src="YOUR_SIMULATION_URL_HERE" width="100%" height="100%"&gt;&lt;/iframe&gt;
+                    </p>
+                </div>
             </div>
-            </section>
+        </section>
 
+        <!-- About Us Section -->
         <section id="about" class="content-section bg-black/75 rounded-3xl shadow-xl shadow-inner my-10">
             <h2 class="section-title text-4xl font-bold mb-8 text-center">About Us</h2>
             <div class="max-w-3xl mx-auto text-center">
@@ -488,6 +532,7 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-gray-800 text-center py-6 mt-10 rounded-3xl">
         <p class="text-sm">
             &copy; 2025 Team Poseidon. All rights reserved. Made for NASA Space Apps Hackathon.
@@ -495,11 +540,6 @@
     </footer>
 
     <script>
-        // NEW: Scroll to the top on page load
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-        });
-
         // JavaScript for mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
